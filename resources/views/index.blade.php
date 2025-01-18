@@ -147,13 +147,13 @@
     <div class="collapse" id="ui-basic">
       <ul class="nav flex-column sub-menu">
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('ui.buttons') }}" data-bs-toggle="tooltip" title="Ajoutez un nouveau produit à votre inventaire">Ajouter un produit</a>
+          <a class="nav-link" href="{{ route('Products.create') }}" data-bs-toggle="tooltip" title="Ajoutez un nouveau produit à votre inventaire">Ajouter un produit</a>
         </li>
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('ui.dropdowns') }}" data-bs-toggle="tooltip" title="Gérez les catégories des produits">Catégories</a>
+          <a class="nav-link" href="{{ route('categories.index') }}" data-bs-toggle="tooltip" title="Gérez les catégories des produits">Catégories</a>
         </li>
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('ui.typography') }}" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
+          <a class="nav-link" href="{{ route('#', ['id' => $product->id ?? 1]) }}" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
         </li>
       </ul>
     </div>
@@ -195,7 +195,7 @@
     <div class="collapse" id="tables">
       <ul class="nav flex-column sub-menu">
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('tables.basic-table') }}" data-bs-toggle="tooltip" title="Affichez et gérez la liste complète des articles en stock">Liste des stocks</a>
+          <a class="nav-link" href="{{ route('inventaires.index') }}" data-bs-toggle="tooltip" title="Affichez et gérez la liste complète des articles en stock">Liste des stocks</a>
         </li>
       </ul>
     </div>

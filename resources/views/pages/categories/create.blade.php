@@ -128,13 +128,13 @@
     <div class="collapse" id="ui-basic">
       <ul class="nav flex-column sub-menu">
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('ui.buttons') }}" data-bs-toggle="tooltip" title="Ajoutez un nouveau produit à votre inventaire">Ajouter un produit</a>
+          <a class="nav-link" href="{{ route('Products.create') }}" data-bs-toggle="tooltip" title="Ajoutez un nouveau produit à votre inventaire">Ajouter un produit</a>
         </li>
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('ui.dropdowns') }}" data-bs-toggle="tooltip" title="Gérez les catégories des produits">Catégories</a>
+          <a class="nav-link" href="{{ route('categories.index') }}" data-bs-toggle="tooltip" title="Gérez les catégories des produits">Catégories</a>
         </li>
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('ui.typography') }}" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
+          <a class="nav-link" href="#"" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
         </li>
       </ul>
     </div>
@@ -176,7 +176,7 @@
     <div class="collapse" id="tables">
       <ul class="nav flex-column sub-menu">
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('tables.basic-table') }}" data-bs-toggle="tooltip" title="Affichez et gérez la liste complète des articles en stock">Liste des stocks</a>
+          <a class="nav-link" href="{{ route('inventaires.index') }}" data-bs-toggle="tooltip" title="Affichez et gérez la liste complète des articles en stock">Liste des stocks</a>
         </li>
       </ul>
     </div>
@@ -200,7 +200,7 @@
       <i class="icon-head menu-icon"></i>
       <span class="menu-title">Utilisateurs</span>
       <i class="menu-arrow"></i>
-    </a> 
+    </a>
     <div class="collapse" id="auth">
       <ul class="nav flex-column sub-menu">
         <li class="nav-item"> 
@@ -213,28 +213,42 @@
     </div>
   </li>
 </ul>
+
 </nav>
         <!-- partial -->
         <div class="main-panel">
-          <div class="content-wrapper">
-            <div class="row">
-              <div class="col-lg-12 grid-margin">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title">Dropdown menu</h4>
-                    
-                     
-                      
+                    <div class="card-body">
+                        <h4 class="card-title">Créer une nouvelle Catégorie</h4>
+                        <form class="forms-sample" method="POST" action="{{ route('categories.store') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <label for="nom">Nom Catégorie </label>
+                                <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom du produit" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="4" placeholder="Description du produit" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2">Créer</button>
+                            <button type="reset" class="btn btn-light">Annuler</button>
+                        </form>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-          <!-- content-wrapper ends -->
-          <!-- partial:../../partials/_footer.html -->
-          <footer class="footer">
+        </div>
+    </div>
+</div>
+
+</div>
+
+<footer class="footer">
   <div class="d-sm-flex justify-content-center justify-content-sm-between">
-    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024. Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin </a> from BootstrapDash. All rights reserved.</span>
-    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">isc-Corporate@ Data_Protect  <i class="ti-heart text-danger ms-1"></i></span>
+    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023. Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ms-1"></i></span>
   </div>
 </footer>
           <!-- partial -->

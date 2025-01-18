@@ -17,8 +17,10 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="../../assets/css/style.css">
     <!-- endinject -->
+
+    <!-- endinject -->
     <link rel="shortcut icon" href="../../assets/images/favicon.png" />
-  </head>
+    </head>
   <body>
     <div class="container-scroller">
       <!-- partial:../../partials/_navbar.html -->
@@ -134,7 +136,7 @@
           <a class="nav-link" href="{{ route('categories.index') }}" data-bs-toggle="tooltip" title="Gérez les catégories des produits">Catégories</a>
         </li>
         <li class="nav-item"> 
-          <a class="nav-link" href="#"" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
+          <a class="nav-link" href="#" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
         </li>
       </ul>
     </div>
@@ -215,29 +217,88 @@
 </ul>
 
 </nav>
-        <!-- partial -->
-        <div class="main-panel">
-          <div class="content-wrapper">
-            <div class="row">
-              <div class="col-lg-12 grid-margin">
-                <div class="card">
+<div class="main-panel">
+  <div class="content-wrapper">
+      <div class="row">
+          <div class="col-lg-12 grid-margin">
+              <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Dropdown menu</h4>
-                    
-                     
-                      
-                </div>
+                      <h4 class="card-title">Liste des Produits</h4>
+                      <table class="table table-hover">
+                          <thead>
+                              <tr>
+                                  <th>Image</th>
+                                  <th>Nom du Produit</th>
+                                  <th>Catégorie</th>
+                                  <th>Prix</th>
+                                  <th>Quantité</th>
+                                  <th>Évaluation</th>
+                                  <th>Actions</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              @foreach($produits as $produit)
+                              <tr>
+                                  <!-- Image -->
+                                  <td>
+                                      <img src="{{ asset('storage/' . $produit->image) }}" alt="Image du produit" style="width: 50px; height: 50px; border-radius: 5px;">
+                                  </td>
+                                  
+                                  <!-- Nom -->
+                                  <td>{{ $produit->nom }}</td>
+                                  
+                                  <!-- Catégorie -->
+                                  <td>{{ $produit->categorie->nom ?? 'Sans catégorie' }}</td>
+                                  
+                                  <!-- Prix -->
+                                  <td>{{ $produit->prix }} €</td>
+                                  
+                                  <!-- Quantité -->
+                                  <td>{{ $produit->quantite }}</td>
+                                  
+                                  <!-- Évaluation -->
+                                  <td>
+                                      @php
+                                          $rating = $produit->evaluation ?? 0; // Ajoutez une colonne 'evaluation' à votre table produits
+                                      @endphp
+                                      <div style="display: flex; align-items: center;">
+                                          @for($i = 1; $i <= 5; $i++)
+                                              @if($i <= $rating)
+                                                  <i class="mdi mdi-star" style="color: gold;"></i>
+                                              @else
+                                                  <i class="mdi mdi-star-outline" style="color: gray;"></i>
+                                              @endif
+                                          @endfor
+                                      </div>
+                                  </td>
+
+                                  <!-- Actions -->
+                                  <td class="action-buttons">
+                                      <a href="{{ route('Products.show', ['id' => $produit->id]) }}" class="btn btn-sm btn-primary">Voir</a>
+                                      <a href="{{ route('Products.edit', ['id' => $produit->id]) }}" class="btn btn-sm btn-warning">Modifier</a>
+                                      <form action="{{ route('Products.destroy', ['id' => $produit->id]) }}" method="POST" style="display: inline-block;">
+                                          @csrf
+                                          @method('DELETE')
+                                          <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                                      </form>
+                                  </td>
+                              </tr>
+                              @endforeach
+                          </tbody>
+                      </table>
+                      <div class="text-center mt-4">
+                          <button class="btn btn-secondary">Afficher plus</button>
+                      </div>
+                  </div>
               </div>
-            </div>
           </div>
+      </div>
+  </div>
+</div>
+
           <!-- content-wrapper ends -->
           <!-- partial:../../partials/_footer.html -->
-          <footer class="footer">
-  <div class="d-sm-flex justify-content-center justify-content-sm-between">
-    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023. Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ms-1"></i></span>
-  </div>
-</footer>
+         
           <!-- partial -->
         </div>
         <!-- main-panel ends -->
@@ -246,6 +307,12 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
+    <footer class="footer">
+      <div class="d-sm-flex justify-content-center justify-content-sm-between">
+        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023. Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ms-1"></i></span>
+      </div>
+    </footer>
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
