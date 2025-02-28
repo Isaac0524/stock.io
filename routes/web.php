@@ -3,12 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\VenteController;
+use App\Http\Controllers\DashboardController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [DashboardController::class, 'index'])->name('index');
+Route::get('/index', [DashboardController::class, 'index'])->name('index');
 
-Route::view('/index', 'index')->name('index');
 // Index : Afficher la liste des produits
 Route::get('/products', [ProduitController::class, 'index'])->name('inventaires.index');
 
@@ -39,12 +39,14 @@ Route::post('/categories', [CategorieController::class, 'store'])->name('categor
 Route::put('/categories/{id}', [CategorieController::class, 'update'])->name('categories.update');
 Route::delete('/categories/{id}', [CategorieController::class, 'destroy'])->name('categories.destroy');
 
-Route::view('/pages/forms/basic-elements', 'pages.forms.basic-elements')->name('forms.basic-elements');
+Route::get('/ventes', [VenteController::class, 'index'])->name('ventes.index'); // Historique des ventes
+Route::get('/vente/create', [VenteController::class, 'create'])->name('ventes.create'); // Page de création d'une vente
+Route::post('/vente', [VenteController::class, 'store'])->name('ventes.store'); // Enregistrer une vente
+
+Route::view('/pages/forms/basic-elements', 'pages.forms.basic-elements  ')->name('forms.basic-elements  ');
 Route::view('/pages/charts/chartjs', 'pages.charts.chartjs')->name('charts.chartjs');
 
 Route::view('/pages/icons/mdi', 'pages.icons.mdi')->name('icons.mdi');
 Route::view('/pages/samples/login', 'pages.samples.login')->name('auth.login');
 Route::view('/pages/samples/register', 'pages.samples.register')->name('auth.register');
 
-
-// NavBar Routes 

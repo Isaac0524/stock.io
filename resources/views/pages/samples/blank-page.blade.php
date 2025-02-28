@@ -24,8 +24,8 @@
       <!-- partial:../../partials/_navbar.html -->
       <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-    <a class="navbar-brand brand-logo me-5" href="../../index.html"><img src="../../assets/images/logo.svg" class="me-2" alt="logo" /></a>
-    <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../assets/images/logo-mini.svg" alt="logo" /></a>
+    <a class="navbar-brand brand-logo me-5" ><img src="../../assets/images/logo.svg" class="me-2" alt="logo" /></a>
+    <a class="navbar-brand brand-logo-mini" ><img src="../../assets/images/logo-mini.svg" alt="logo" /></a>
   </div>
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
     <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -114,7 +114,7 @@
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
   <li class="nav-item">
-    <a class="nav-link" href="{{ route('index') }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Accédez à votre tableau de bord principal">
+    <a class="nav-link"   data-bs-toggle="tooltip" data-bs-placement="right" title="Accédez à votre tableau de bord principal">
       <i class="icon-grid menu-icon"></i>
       <span class="menu-title">Tableau de bord</span>
     </a>
@@ -148,7 +148,7 @@
     <div class="collapse" id="form-elements">
       <ul class="nav flex-column sub-menu">
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('forms.basic-elements') }}" data-bs-toggle="tooltip" title="Visualisez et modifiez les commandes des clients">Gérer les commandes</a>
+          <a class="nav-link"    data-bs-toggle="tooltip" title="Visualisez et modifiez les commandes des clients">Gérer les commandes</a>
         </li>
       </ul>
     </div>
@@ -159,10 +159,10 @@
       <span class="menu-title">Statistiques</span>
       <i class="menu-arrow"></i>
     </a>
-    <div class="collapse" id="charts">
+      <div class="collapse" id="charts">
       <ul class="nav flex-column sub-menu">
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('charts.chartjs') }}" data-bs-toggle="tooltip" title="Consultez les statistiques de vos stocks">Analyse des stocks</a>
+          <a class="nav-link" href="{{ route('charts.chartjs') }} "  data-bs-toggle="tooltip" title="Consultez les statistiques de vos stocks">Analyse des stocks</a>
         </li>
       </ul>
     </div>
@@ -181,37 +181,8 @@
       </ul>
     </div>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez vos partenaires fournisseurs">
-      <i class="icon-contract menu-icon"></i>
-      <span class="menu-title">Fournisseurs</span>
-      <i class="menu-arrow"></i>
-    </a>
-    <div class="collapse" id="icons">
-      <ul class="nav flex-column sub-menu">
-        <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('icons.mdi') }}" data-bs-toggle="tooltip" title="Consultez la liste des fournisseurs">Liste des fournisseurs</a>
-        </li>
-      </ul>
-    </div>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez l'accès des utilisateurs">
-      <i class="icon-head menu-icon"></i>
-      <span class="menu-title">Utilisateurs</span>
-      <i class="menu-arrow"></i>
-    </a>
-    <div class="collapse" id="auth">
-      <ul class="nav flex-column sub-menu">
-        <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('auth.login') }}" data-bs-toggle="tooltip" title="Connectez-vous à l'application">Connexion</a>
-        </li>
-        <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('auth.register') }}" data-bs-toggle="tooltip" title="Créez un compte utilisateur">Inscription</a>
-        </li>
-      </ul>
-    </div>
-  </li>
+  
+    
 </ul>
 </nav>
         <!-- partial -->
@@ -220,12 +191,12 @@
           </div>
           <!-- content-wrapper ends -->
           <!-- partial:../../partials/_footer.html -->
-          <footer class="footer">
-  <div class="d-sm-flex justify-content-center justify-content-sm-between">
-    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023. Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ms-1"></i></span>
-  </div>
-</footer>
+         <footer class="footer">
+      <div class="d-sm-flex justify-content-center justify-content-sm-between">
+        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Gestion de stock - Tous droits réservés © 2025</span>
+        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Optimisé pour une gestion efficace</span>
+      </div>
+    </footer>
           <!-- partial -->
         </div>
         <!-- main-panel ends -->

@@ -26,9 +26,9 @@
         <!-- partial:../../partials/_navbar.html -->
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-                <a class="navbar-brand brand-logo me-5" href="../../index.html"><img src="../../assets/images/logo.svg"
+                <a class="navbar-brand brand-logo me-5" ><img src="../../assets/images/logo.svg"
                         class="me-2" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="../../index.html"><img
+                <a class="navbar-brand brand-logo-mini" ><img
                         src="../../assets/images/logo-mini.svg" alt="logo" /></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -159,6 +159,23 @@
                         </div>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez les produits de votre stock">
+                          <i class="icon-layout menu-icon"></i>
+                          <span class="menu-title">Ventes</span>
+                          <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ui-basic">
+                          <ul class="nav flex-column sub-menu">
+                            <li class="nav-item"> 
+                              <a class="nav-link" href="{{ route('ventes.create') }}" data-bs-toggle="tooltip" title="vendre un Produit ">Effectue une vente</a>
+                            </li>
+                            <li class="nav-item"> 
+                              <a class="nav-link" href="{{ route('ventes.index') }}" data-bs-toggle="tooltip" title="Voir l'historique ">Historique de Ventes </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                    <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false"
                             aria-controls="form-elements" data-bs-toggle="tooltip" data-bs-placement="right"
                             title="Gérez les commandes des clients">
@@ -169,7 +186,7 @@
                         <div class="collapse" id="form-elements">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('forms.basic-elements') }}"
+                                    <a class="nav-link"   
                                         data-bs-toggle="tooltip"
                                         title="Visualisez et modifiez les commandes des clients">Gérer les
                                         commandes</a>
@@ -188,7 +205,7 @@
                         <div class="collapse" id="charts">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('charts.chartjs') }}" data-bs-toggle="tooltip"
+                                    <a class="nav-link"    data-bs-toggle="tooltip"
                                         title="Consultez les statistiques de vos stocks">Analyse des stocks</a>
                                 </li>
                             </ul>
@@ -224,33 +241,13 @@
                         <div class="collapse" id="icons">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('icons.mdi') }}" data-bs-toggle="tooltip"
+                                    <a class="nav-link"    data-bs-toggle="tooltip"
                                         title="Consultez la liste des fournisseurs">Liste des fournisseurs</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false"
-                            aria-controls="auth" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Gérez l'accès des utilisateurs">
-                            <i class="icon-head menu-icon"></i>
-                            <span class="menu-title">Utilisateurs</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="auth">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('auth.login') }}" data-bs-toggle="tooltip"
-                                        title="Connectez-vous à l'application">Connexion</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('auth.register') }}" data-bs-toggle="tooltip"
-                                        title="Créez un compte utilisateur">Inscription</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
+                    
                 </ul>
 
             </nav>
@@ -261,7 +258,6 @@
                         <div class="col-lg-12 grid-margin">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Dropdown menu</h4>
                                     <div class="container mt-5">
                                         <h2>Modifier la catégorie</h2>
 
@@ -305,19 +301,19 @@
             </div>
             <!-- content-wrapper ends -->
             <!-- partial:../../partials/_footer.html -->
-            <footer class="footer">
-                <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023.
-                        Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a>
-                        from BootstrapDash. All rights reserved.</span>
-                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with
-                        <i class="ti-heart text-danger ms-1"></i></span>
-                </div>
-            </footer>
+
             <!-- partial -->
         </div>
         <!-- main-panel ends -->
     </div>
+    <footer class="footer">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2025.
+                 <a href="#" target="_blank">Prenium acces @MadeByDart</a></span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with
+                <i class="ti-heart text-danger ms-1"></i></span>
+        </div>
+    </footer>
     <!-- page-body-wrapper ends -->
     </div>
     <!-- container-scroller -->

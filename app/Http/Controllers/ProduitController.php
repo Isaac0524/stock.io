@@ -14,15 +14,11 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        // Récupérer tous les produits avec leurs catégories
         $produits = Produits::with('categorie')->get();
 
         return view('pages.Inventaires.index', compact('produits'));
     }
 
-    /**
-     * Afficher le formulaire de création d'un nouveau produit.
-     */
     public function create()
     {
         // Charger toutes les catégories pour le formulaire

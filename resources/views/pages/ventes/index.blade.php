@@ -44,68 +44,9 @@
       </li>
     </ul>
     <ul class="navbar-nav navbar-nav-right">
-      <li class="nav-item dropdown">
-        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-          <i class="icon-bell mx-0"></i>
-          <span class="count"></span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-          <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-          <a class="dropdown-item preview-item">
-            <div class="preview-thumbnail">
-              <div class="preview-icon bg-success">
-                <i class="ti-info-alt mx-0"></i>
-              </div>
-            </div>
-            <div class="preview-item-content">
-              <h6 class="preview-subject font-weight-normal">Application Error</h6>
-              <p class="font-weight-light small-text mb-0 text-muted"> Just now </p>
-            </div>
-          </a>
-          <a class="dropdown-item preview-item">
-            <div class="preview-thumbnail">
-              <div class="preview-icon bg-warning">
-                <i class="ti-settings mx-0"></i>
-              </div>
-            </div>
-            <div class="preview-item-content">
-              <h6 class="preview-subject font-weight-normal">Settings</h6>
-              <p class="font-weight-light small-text mb-0 text-muted"> Private message </p>
-            </div>
-          </a>
-          <a class="dropdown-item preview-item">
-            <div class="preview-thumbnail">
-              <div class="preview-icon bg-info">
-                <i class="ti-user mx-0"></i>
-              </div>
-            </div>
-            <div class="preview-item-content">
-              <h6 class="preview-subject font-weight-normal">New user registration</h6>
-              <p class="font-weight-light small-text mb-0 text-muted"> 2 days ago </p>
-            </div>
-          </a>
-        </div>
-      </li>
-      <li class="nav-item nav-profile dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-          <img src="../../assets/images/faces/face28.jpg" alt="profile" />
-        </a>
-        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-          <a class="dropdown-item">
-            <i class="ti-settings text-primary"></i> Settings </a>
-          <a class="dropdown-item">
-            <i class="ti-power-off text-primary"></i> Logout </a>
-        </div>
-      </li>
-      <li class="nav-item nav-settings d-none d-lg-flex">
-        <a class="nav-link" href="#">
-          <i class="icon-ellipsis"></i>
-        </a>
-      </li>
+     
     </ul>
-    <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-      <span class="icon-menu"></span>
-    </button>
+
   </div>
 </nav>
       <!-- partial -->
@@ -114,7 +55,7 @@
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
   <li class="nav-item">
-    <a class="nav-link"   data-bs-toggle="tooltip" data-bs-placement="right" title="Accédez à votre tableau de bord principal">
+    <a class="nav-link" href="{{ route('index') }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Accédez à votre tableau de bord principal">
       <i class="icon-grid menu-icon"></i>
       <span class="menu-title">Tableau de bord</span>
     </a>
@@ -134,7 +75,24 @@
           <a class="nav-link" href="{{ route('categories.index') }}" data-bs-toggle="tooltip" title="Gérez les catégories des produits">Catégories</a>
         </li>
         <li class="nav-item"> 
-          <a class="nav-link" href="#"" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
+          <a class="nav-link" href="#" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
+        </li>
+      </ul>
+    </div>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez les produits de votre stock">
+      <i class="icon-layout menu-icon"></i>
+      <span class="menu-title">Ventes</span>
+      <i class="menu-arrow"></i>
+    </a>
+    <div class="collapse" id="ui-basic">
+      <ul class="nav flex-column sub-menu">
+        <li class="nav-item"> 
+          <a class="nav-link" href="{{ route('ventes.create') }}" data-bs-toggle="tooltip" title="vendre un Produit ">Effectue une vente</a>
+        </li>
+        <li class="nav-item"> 
+          <a class="nav-link" href="{{ route('ventes.index') }}" data-bs-toggle="tooltip" title="Voir l'historique ">Historique de Ventes </a>
         </li>
       </ul>
     </div>
@@ -193,8 +151,36 @@
               <div class="col-lg-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Statistiques</h4>
+                    <div class="container">
+                        <h2>Historique des ventes</h2>
                     
+                        @if(session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+                    
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Quantité</th>
+                                    <th>Prix Total</th>
+                                    <th>Client</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($ventes as $vente)
+                                    <tr>
+                                        <td>{{ $vente->produit->nom }}</td>
+                                        <td>{{ $vente->quantite }}</td>
+                                        <td>{{ $vente->prix_total }} FCFA</td>
+                                        <td>{{ $vente->client }}</td>
+                                        <td>{{ $vente->created_at->format('d/m/Y H:i') }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                      
                       
                 </div>
