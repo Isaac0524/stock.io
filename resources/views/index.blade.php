@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,243 +23,214 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="assets/images/favicon.png" />
-  </head>
-  <body>
-    <div class="container-scroller">
-      <div class="row p-0 m-0 proBanner" id="proBanner">
-        <div class="col-md-12 p-0 m-0">
-          <div class="card-body card-body-padding px-3 d-flex align-items-center justify-content-between">
-            <div>
-              
-            </div>
-            <div class="d-flex align-items-center justify-content-between">
-              <a route{{"/"}}"><i class="ti-home me-3 text-white"></i></a>
-              <button id="bannerClose" class="btn border-0 p-0">
-                <i class="ti-close text-white"></i>
-              </button>
-            </div>
-          </div>
+</head>
+
+<body>
+
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
+            <a class="navbar-brand brand-logo me-5"><img src="assets/images/logo.svg" class="me-2"
+                    alt="logo" /></a>
+            <a class="navbar-brand brand-logo-mini"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
         </div>
-      </div>
-      <!-- partial:partials/_navbar.html -->
-      <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-  <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-    <a class="navbar-brand brand-logo me-5"  ><img src="assets/images/logo.svg" class="me-2" alt="logo" /></a>
-    <a class="navbar-brand brand-logo-mini"  ><img src="assets/images/logo-mini.svg" alt="logo" /></a>
-  </div>
-  <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-    <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-      <span class="icon-menu"></span>
-    </button>
-    <ul class="navbar-nav mr-lg-2">
-      <li class="nav-item nav-search d-none d-lg-block">
-        <div class="input-group">
-          <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-            <span class="input-group-text" id="search">
-              <i class="icon-search"></i>
-            </span>
-          </div>
-          <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
-        </div>
-      </li>
-    </ul>
-    <ul class="navbar-nav navbar-nav-right">
-      <li class="nav-item dropdown">
-        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-          <i class="icon-bell mx-0"></i>
-          <span class="count"></span>
-        </a>
-      </li>
-    </ul>
-</nav>
-      <!-- partial -->
-      <div class="container-fluid page-body-wrapper">
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="icon-menu"></span>
+            </button>
+            <ul class="navbar-nav mr-lg-2">
+                <li class="nav-item nav-search d-none d-lg-block">
+                    <div class="input-group">
+                        <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+                            <span class="input-group-text" id="search">
+                                <i class="icon-search"></i>
+                            </span>
+                        </div>
+                        <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now"
+                            aria-label="search" aria-describedby="search">
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item dropdown">
+                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
+                        data-bs-toggle="dropdown">
+                        <i class="icon-bell mx-0"></i>
+                        <span class="count"></span>
+                    </a>
+                </li>
+            </ul>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-        <ul class="nav">
-  <li class="nav-item">
-    <a class="nav-link" href="{{ route('index') }}" data-bs-toggle="tooltip" data-bs-placement="right" title="Accédez à votre tableau de bord principal">
-      <i class="icon-grid menu-icon"></i>
-      <span class="menu-title">Tableau de bord</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez les produits de votre stock">
-      <i class="icon-layout menu-icon"></i>
-      <span class="menu-title">Produits</span>
-      <i class="menu-arrow"></i>
-    </a>
-    <div class="collapse" id="ui-basic">
-      <ul class="nav flex-column sub-menu">
-        <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('Products.create') }}" data-bs-toggle="tooltip" title="Ajoutez un nouveau produit à votre inventaire">Ajouter un produit</a>
-        </li>
-        <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('categories.index') }}" data-bs-toggle="tooltip" title="Gérez les catégories des produits">Catégories</a>
-        </li>
-        <li class="nav-item"> 
-          <a class="nav-link" href="#" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
-        </li>
-      </ul>
-    </div>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez les produits de votre stock">
-      <i class="icon-layout menu-icon"></i>
-      <span class="menu-title">Ventes</span>
-      <i class="menu-arrow"></i>
-    </a>
-    <div class="collapse" id="ui-basic">
-      <ul class="nav flex-column sub-menu">
-        <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('ventes.create') }}" data-bs-toggle="tooltip" title="vendre un Produit ">Effectue une vente</a>
-        </li>
-        <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('ventes.index') }}" data-bs-toggle="tooltip" title="Voir l'historique ">Historique de Ventes </a>
-        </li>
-      </ul>
-    </div>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez les commandes des clients">
-      <i class="icon-columns menu-icon"></i>
-      <span class="menu-title">Commandes</span>
-      <i class="menu-arrow"></i>
-    </a>
-    <div class="collapse" id="form-elements">
-      <ul class="nav flex-column sub-menu">
-        <li class="nav-item">
-          <a class="nav-link"    data-bs-toggle="tooltip" title="Visualisez et modifiez les commandes des clients">Gérer les commandes</a>
-        </li>
-      </ul>
-    </div>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts" data-bs-toggle="tooltip" data-bs-placement="right" title="Analysez les statistiques de gestion des stocks">
-      <i class="icon-bar-graph menu-icon"></i>
-      <span class="menu-title">Statistiques</span>
-      <i class="menu-arrow"></i>
-    </a>
-    <div class="collapse" id="charts">
-      <ul class="nav flex-column sub-menu">
-        <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('charts.chartjs') }} "  data-bs-toggle="tooltip" title="Consultez les statistiques de vos stocks">Analyse des stocks</a>
-        </li>
-      </ul>
-    </div>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez les articles de votre inventaire">
-      <i class="icon-grid-2 menu-icon"></i>
-      <span class="menu-title">Inventaire</span>
-      <i class="menu-arrow"></i>
-    </a>
-    <div class="collapse" id="tables">
-      <ul class="nav flex-column sub-menu">
-        <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('inventaires.index') }}" data-bs-toggle="tooltip" title="Affichez et gérez la liste complète des articles en stock">Liste des stocks</a>
-        </li>
-      </ul>
-    </div>
-  </li>
-  
-</nav>
+          <ul class="nav">
+              <li class="nav-item">
+                  <a class="nav-link" href="{{ route('index') }}">
+                      <i class="icon-grid menu-icon"></i>
+                      <span class="menu-title">Tableau de bord</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits">
+                      <i class="mdi mdi-package-variant-closed menu-icon"></i>
+                      <span class="menu-title">Produits</span>
+                      <i class="menu-arrow"></i>
+                  </a>
+                  <div class="collapse" id="menu-produits">
+                      <ul class="nav flex-column sub-menu">
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ route('Products.create') }}">Ajouter un produit</a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="{{ route('categories.index') }}">Catégories</a>
+                          </li>
+                      </ul>
+                  </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
+                    aria-controls="menu-ventes" title="Gérez les ventes">
+                    <i class="mdi mdi-cash-register menu-icon"></i>
+                    <span class="menu-title">Ventes</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="menu-ventes">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
+                                Effectuer une vente
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
+                                Historique de ventes
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- Inventaire -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
+                    aria-controls="menu-inventaire" title="Gérez l'inventaire">
+                    <i class="mdi mdi-clipboard-list menu-icon"></i>
+                    <span class="menu-title">Inventaire</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="menu-inventaire">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('inventaires.index') }}" title="Liste des stocks">
+                                Liste des stocks
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+          </ul>
+      </nav>
         <!-- partial -->
         <div class="main-panel">
-          <div class="content-wrapper">
-              <div class="row">
-                  <div class="col-md-12 grid-margin">
-                      <div class="row">
-                          <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                              <h3 class="font-weight-bold">Gestion de Stock</h3>
-                              <h6 class="font-weight-normal mb-0">Suivi en temps réel des stocks et ventes.</h6>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              
-              <div class="row">
-                  <!-- Produits en stock -->
-                  <div class="col-md-6 grid-margin stretch-card">
-                      <div class="card card-tale">
-                          <div class="card-body">
-                              <p class="mb-4">Produits en stock</p>
-                              <p class="fs-30 mb-2">{{$prodsenStock}}</p>
-                          </div>
-                      </div>
-                  </div>
-                  
-                  <!-- Produits en rupture -->
-                  <div class="col-md-6 grid-margin stretch-card">
-                      <div class="card card-dark-blue">
-                          <div class="card-body">
-                              <p class="mb-4">Produits en rupture ({{$nbrProdsruptur}})</p>
-                              @if($nbrProdsruptur > 0)
-                                  <ul class="list-unstyled">
-                                      @foreach($prodsruptur as $produit)
-                                          <li>- {{$produit->nom}}</li>
-                                      @endforeach
-                                  </ul>
-                              @else
-                                  <p class="text-muted">Aucun produit en rupture</p>
-                              @endif
-                          </div>
-                      </div>
-                  </div>
-              </div>
-      
-              <div class="row">
-                  <!-- Tableau des stocks -->
-                  <div class="col-md-12 grid-margin stretch-card">
-                      <div class="card">
-                          <div class="card-body">
-                              <p class="card-title">Tableau des Stocks</p>
-                              <div class="table-responsive">
-                                  <table class="table">
-                                      <thead>
-                                          <tr>
-                                              <th>Nom du Produit</th>
-                                              <th>Catégorie</th>
-                                              <th>Prix (€)</th>
-                                              <th>Quantité</th>
-                                              <th>Statut</th>
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                          @foreach($produits as $produit)
-                                              <tr>
-                                                  <td>{{ $produit->nom }}</td>
-                                                  <td>{{ $produit->categorie->nom ?? 'Non catégorisé' }}</td>
-                                                  <td>{{ $produit->prix }}€</td>
-                                                  <td>{{ $produit->quantite }}</td>
-                                                  <td>
-                                                      @if($produit->quantite > 10)
-                                                          <span class="badge bg-success">Disponible</span>
-                                                      @elseif($produit->quantite > 0)
-                                                          <span class="badge bg-warning">Faible stock</span>
-                                                      @else
-                                                          <span class="badge bg-danger">Rupture</span>
-                                                      @endif
-                                                  </td>
-                                              </tr>
-                                          @endforeach  
-                                      </tbody>
-                                  </table>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-12 grid-margin">
+                        <div class="row">
+                            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                                <h3 class="font-weight-bold">Gestion de Stock</h3>
+                                <h6 class="font-weight-normal mb-0">Suivi en temps réel des stocks et ventes.</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Produits en stock -->
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="card card-tale">
+                            <div class="card-body">
+                                <p class="mb-4">Produits en stock</p>
+                                <p class="fs-30 mb-2">{{ $prodsenStock }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produits en rupture -->
+                    <div class="col-md-6 grid-margin stretch-card">
+                        <div class="card card-dark-blue">
+                            <div class="card-body">
+                                <p class="mb-4">Produits en rupture ({{ $nbrProdsruptur }})</p>
+                                @if ($nbrProdsruptur > 0)
+                                    <ul class="list-unstyled">
+                                        @foreach ($prodsruptur as $produit)
+                                            <li>- {{ $produit->nom }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <p class="text-muted">Aucun produit en rupture</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Tableau des stocks -->
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-title">Tableau des Stocks</p>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Nom du Produit</th>
+                                                <th>Catégorie</th>
+                                                <th>Prix</th>
+                                                <th>Quantité</th>
+                                                <th>Statut</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($produits as $produit)
+                                                <tr>
+                                                    <td>{{ $produit->nom }}</td>
+                                                    <td>{{ $produit->categorie->nom ?? 'Non catégorisé' }}</td>
+                                                    <td>{{ $produit->prix }} FCFA</td>
+                                                    <td>{{ $produit->quantite }}</td>
+                                                    <td>
+                                                        @if ($produit->quantite > 10)
+                                                            <span class="badge bg-success">Disponible</span>
+                                                        @elseif($produit->quantite > 0)
+                                                            <span class="badge bg-warning">Faible stock</span>
+                                                        @else
+                                                            <span class="badge bg-danger">Rupture</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- page-body-wrapper ends -->
-    
+
+    </div>
+
     <footer class="footer">
-      <div class="d-sm-flex justify-content-center justify-content-sm-between">
-        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Gestion de stock - Tous droits réservés © 2025</span>
-        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Optimisé pour une gestion efficace</span>
-      </div>
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Gestion de stock - Tous droits
+                réservés © 2025</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Optimisé pour une gestion
+                efficace</span>
+        </div>
     </footer>
     <!-- container-scroller -->
     <!-- plugins:js -->
@@ -282,5 +254,6 @@
     <script src="assets/js/dashboard.js"></script>
     <!-- <script src="assets/js/Chart.roundedBarCharts.js"></script> -->
     <!-- End custom js for this page-->
-  </body>
+</body>
+
 </html>

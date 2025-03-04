@@ -55,61 +55,6 @@
                             <i class="icon-bell mx-0"></i>
                             <span class="count"></span>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                            aria-labelledby="notificationDropdown">
-                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-success">
-                                        <i class="ti-info-alt mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted"> Just now </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-warning">
-                                        <i class="ti-settings mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <h6 class="preview-subject font-weight-normal">Settings</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted"> Private message </p>
-                                </div>
-                            </a>
-                            <a class="dropdown-item preview-item">
-                                <div class="preview-thumbnail">
-                                    <div class="preview-icon bg-info">
-                                        <i class="ti-user mx-0"></i>
-                                    </div>
-                                </div>
-                                <div class="preview-item-content">
-                                    <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                                    <p class="font-weight-light small-text mb-0 text-muted"> 2 days ago </p>
-                                </div>
-                            </a>
-                        </div>
-                    </li>
-                    <li class="nav-item nav-profile dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                            id="profileDropdown">
-                            <img src="../../assets/images/faces/face28.jpg" alt="profile" />
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
-                            aria-labelledby="profileDropdown">
-                            <a class="dropdown-item">
-                                <i class="ti-settings text-primary"></i> Settings </a>
-                            <a class="dropdown-item">
-                                <i class="ti-power-off text-primary"></i> Logout </a>
-                        </div>
-                    </li>
-                    <li class="nav-item nav-settings d-none d-lg-flex">
-                        <a class="nav-link" href="#">
-                            <i class="icon-ellipsis"></i>
-                        </a>
                     </li>
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
@@ -123,133 +68,83 @@
             <!-- partial:../../partials/_sidebar.html -->
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
+    
+                    <!-- Tableau de Bord -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('index') }}" data-bs-toggle="tooltip"
-                            data-bs-placement="right" title="Accédez à votre tableau de bord principal">
+                        <a class="nav-link" href="{{ route('index') }}" data-bs-toggle="tooltip" title="Tableau de bord">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">Tableau de bord</span>
                         </a>
                     </li>
+    
+                    <!-- Produits -->
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                            aria-controls="ui-basic" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Gérez les produits de votre stock">
-                            <i class="icon-layout menu-icon"></i>
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits" aria-expanded="false"
+                            aria-controls="menu-produits" title="Gérez les produits">
+                            <i class="mdi mdi-package-variant-closed menu-icon"></i>
                             <span class="menu-title">Produits</span>
                             <i class="menu-arrow"></i>
                         </a>
-                        <div class="collapse" id="ui-basic">
+                        <div class="collapse" id="menu-produits">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('Products.create') }}"
-                                        data-bs-toggle="tooltip"
-                                        title="Ajoutez un nouveau produit à votre inventaire">Ajouter un produit</a>
+                                    <a class="nav-link" href="{{ route('Products.create') }}" title="Ajouter un produit">
+                                        Ajouter un produit
+                                    </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('categories.index') }}"
-                                        data-bs-toggle="tooltip"
-                                        title="Gérez les catégories des produits">Catégories</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#" data-bs-toggle="tooltip"
-                                        title="Consultez l'historique des produits ajoutés ou supprimés">Historique des
-                                        produits</a>
+                                    <a class="nav-link" href="{{ route('categories.index') }}" title="Gérer les catégories">
+                                        Catégories
+                                    </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
+    
+                    <!-- Ventes -->
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez les produits de votre stock">
-                          <i class="icon-layout menu-icon"></i>
-                          <span class="menu-title">Ventes</span>
-                          <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="ui-basic">
-                          <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> 
-                              <a class="nav-link" href="{{ route('ventes.create') }}" data-bs-toggle="tooltip" title="vendre un Produit ">Effectue une vente</a>
-                            </li>
-                            <li class="nav-item"> 
-                              <a class="nav-link" href="{{ route('ventes.index') }}" data-bs-toggle="tooltip" title="Voir l'historique ">Historique de Ventes </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false"
-                            aria-controls="form-elements" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Gérez les commandes des clients">
-                            <i class="icon-columns menu-icon"></i>
-                            <span class="menu-title">Commandes</span>
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
+                            aria-controls="menu-ventes" title="Gérez les ventes">
+                            <i class="mdi mdi-cash-register menu-icon"></i>
+                            <span class="menu-title">Ventes</span>
                             <i class="menu-arrow"></i>
                         </a>
-                        <div class="collapse" id="form-elements">
+                        <div class="collapse" id="menu-ventes">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link"   
-                                        data-bs-toggle="tooltip"
-                                        title="Visualisez et modifiez les commandes des clients">Gérer les
-                                        commandes</a>
+                                    <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
+                                        Effectuer une vente
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
+                                        Historique de ventes
+                                    </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
+    
+                    <!-- Inventaire -->
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false"
-                            aria-controls="charts" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Analysez les statistiques de gestion des stocks">
-                            <i class="icon-bar-graph menu-icon"></i>
-                            <span class="menu-title">Statistiques</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="charts">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link"    data-bs-toggle="tooltip"
-                                        title="Consultez les statistiques de vos stocks">Analyse des stocks</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false"
-                            aria-controls="tables" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Gérez les articles de votre inventaire">
-                            <i class="icon-grid-2 menu-icon"></i>
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
+                            aria-controls="menu-inventaire" title="Gérez l'inventaire">
+                            <i class="mdi mdi-clipboard-list menu-icon"></i>
                             <span class="menu-title">Inventaire</span>
                             <i class="menu-arrow"></i>
                         </a>
-                        <div class="collapse" id="tables">
+                        <div class="collapse" id="menu-inventaire">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('inventaires.index') }}"
-                                        data-bs-toggle="tooltip"
-                                        title="Affichez et gérez la liste complète des articles en stock">Liste des
-                                        stocks</a>
+                                    <a class="nav-link" href="{{ route('inventaires.index') }}" title="Liste des stocks">
+                                        Liste des stocks
+                                    </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false"
-                            aria-controls="icons" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Gérez vos partenaires fournisseurs">
-                            <i class="icon-contract menu-icon"></i>
-                            <span class="menu-title">Fournisseurs</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="icons">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item">
-                                    <a class="nav-link"    data-bs-toggle="tooltip"
-                                        title="Consultez la liste des fournisseurs">Liste des fournisseurs</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    
+    
                 </ul>
-
             </nav>
             <!-- partial -->
             <div class="main-panel">

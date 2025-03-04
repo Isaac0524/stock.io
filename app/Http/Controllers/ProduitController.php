@@ -24,122 +24,122 @@ class ProduitController extends Controller
         // Charger toutes les catégories pour le formulaire
         $categories = Categories::all();
 
-        return view('pages.Products.Create', compact('categories'));
-    }
-
-    /**
-     * Enregistrer un nouveau produit.
-     */
-    public function store(Request $request)
-    {
-        // Valider les données de la requête
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'prix' => 'required|numeric',
-            'quantite' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'categorie_id' => 'required|exists:categories,id', // Valider que la catégorie existe
-        ]);
-
-        // Gérer l'image si elle est présente
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
+            return view('pages.Products.Create', compact('categories'));
         }
 
-        // Créer un nouveau produit
-        Produits::create([
-            'nom' => $request->nom,
-            'description' => $request->description,
-            'prix' => $request->prix,
-            'quantite' => $request->quantite,
-            'image' => $imagePath,
-            'categorie_id' => $request->categorie_id,
-        ]);
+        /**
+         * Enregistrer un nouveau produit.
+         */
+        public function store(Request $request)
+        {
+            // Valider les données de la requête
+            $request->validate([
+                'nom' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'prix' => 'required|numeric',
+                'quantite' => 'required|integer',
+                'image' => 'nullable|file|max:5120',
+                'categorie_id' => 'required|exists:categories,id', // Valider que la catégorie existe
+            ]);
 
-        return redirect()->route('inventaires.index')->with('success', 'Produit créé avec succès.');
-    }
+            // Gérer l'image si elle est présente
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('images', 'public');
+            }
 
-    /**
-     * Afficher un produit spécifique.
-     */
-    public function show(string $id)
-    {
-        // Trouver le produit par son ID
-        $produit = Produits::with('categorie')->findOrFail($id);
+            // Créer un nouveau produit
+            Produits::create([
+                'nom' => $request->nom,
+                'description' => $request->description,
+                'prix' => $request->prix,
+                'quantite' => $request->quantite,
+                'image' => $imagePath,
+                'categorie_id' => $request->categorie_id,
+            ]);
 
-        return view('pages.Products.show', compact('produit'));
-    }
+            return redirect()->route('inventaires.index')->with('success', 'Produit créé avec succès.');
+        }
 
-    /**
-     * Afficher le formulaire pour modifier un produit.
-     */
-    public function edit(string $id)
-    {
-        // Trouver le produit et charger les catégories
-        $produit = Produits::findOrFail($id);
-        $categories = Categories::all();
+        /**
+         * Afficher un produit spécifique.
+         */
+        public function show(string $id)
+        {
+            // Trouver le produit par son ID
+            $produit = Produits::with('categorie')->findOrFail($id);
 
-        return view('pages.Products.edit', compact('produit', 'categories'));
-    }
+            return view('pages.Products.show', compact('produit'));
+        }
 
-    /**
-     * Mettre à jour un produit existant.
-     */
-    public function update(Request $request, string $id)
-    {
-        // Valider les données de la requête
-        $request->validate([
-            'nom' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'prix' => 'required|numeric',
-            'quantite' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'categorie_id' => 'required|exists:categories,id',
-        ]);
+        /**
+         * Afficher le formulaire pour modifier un produit.
+         */
+        public function edit(string $id)
+        {
+            // Trouver le produit et charger les catégories
+            $produit = Produits::findOrFail($id);
+            $categories = Categories::all();
 
-        // Trouver le produit
-        $produit = Produits::findOrFail($id);
+            return view('pages.Products.edit', compact('produit', 'categories'));
+        }
 
-        // Gérer l'image si elle est présente
-        if ($request->hasFile('image')) {
-            // Supprimer l'ancienne image si elle existe
+        /**
+         * Mettre à jour un produit existant.
+         */
+        public function update(Request $request, string $id)
+        {
+            // Valider les données de la requête
+            $request->validate([
+                'nom' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'prix' => 'required|numeric',
+                'quantite' => 'required|integer',
+                'image' => 'nullable|file|max:5120',
+                'categorie_id' => 'required|exists:categories,id',
+            ]);
+
+            // Trouver le produit
+            $produit = Produits::findOrFail($id);
+
+            // Gérer l'image si elle est présente
+            if ($request->hasFile('image')) {
+                // Supprimer l'ancienne image si elle existe
+                if ($produit->image) {
+                    Storage::disk('public')->delete($produit->image);
+                }
+                $produit->image = $request->file('image')->store('images', 'public');
+            }
+
+            // Mettre à jour les champs du produit
+            $produit->update([
+                'nom' => $request->nom,
+                'description' => $request->description,
+                'prix' => $request->prix,
+                'quantite' => $request->quantite,
+                'image' => $produit->image ?? $produit->image,
+                'categorie_id' => $request->categorie_id,
+            ]);
+
+            return redirect()->route('inventaires.index')->with('success', 'Produit mis à jour avec succès.');
+        }
+
+        /**
+         * Supprimer un produit.
+         */
+        public function destroy(string $id)
+        {
+            // Trouver le produit
+            $produit = Produits::findOrFail($id);
+
+            // Supprimer l'image si elle existe
             if ($produit->image) {
                 Storage::disk('public')->delete($produit->image);
             }
-            $produit->image = $request->file('image')->store('images', 'public');
+
+            // Supprimer le produit
+            $produit->delete();
+
+            return redirect()->route('inventaires.index')->with('success', 'Produit supprimé avec succès.');
         }
-
-        // Mettre à jour les champs du produit
-        $produit->update([
-            'nom' => $request->nom,
-            'description' => $request->description,
-            'prix' => $request->prix,
-            'quantite' => $request->quantite,
-            'image' => $produit->image ?? $produit->image,
-            'categorie_id' => $request->categorie_id,
-        ]);
-
-        return redirect()->route('inventaires.index')->with('success', 'Produit mis à jour avec succès.');
     }
-
-    /**
-     * Supprimer un produit.
-     */
-    public function destroy(string $id)
-    {
-        // Trouver le produit
-        $produit = Produits::findOrFail($id);
-
-        // Supprimer l'image si elle existe
-        if ($produit->image) {
-            Storage::disk('public')->delete($produit->image);
-        }
-
-        // Supprimer le produit
-        $produit->delete();
-
-        return redirect()->route('inventaires.index')->with('success', 'Produit supprimé avec succès.');
-    }
-}

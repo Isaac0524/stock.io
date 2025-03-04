@@ -42,6 +42,7 @@ Route::delete('/categories/{id}', [CategorieController::class, 'destroy'])->name
 Route::get('/ventes', [VenteController::class, 'index'])->name('ventes.index'); // Historique des ventes
 Route::get('/vente/create', [VenteController::class, 'create'])->name('ventes.create'); // Page de création d'une vente
 Route::post('/vente', [VenteController::class, 'store'])->name('ventes.store'); // Enregistrer une vente
+Route::get('/recu/{id}', [VenteController::class, 'generateRecuPDF'])->name('recu.pdf');
 
 Route::view('/pages/forms/basic-elements', 'pages.forms.basic-elements  ')->name('forms.basic-elements  ');
 Route::view('/pages/charts/chartjs', 'pages.charts.chartjs')->name('charts.chartjs');

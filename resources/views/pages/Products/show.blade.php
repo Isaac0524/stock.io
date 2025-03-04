@@ -133,36 +133,24 @@
         <li class="nav-item"> 
           <a class="nav-link" href="{{ route('categories.index') }}" data-bs-toggle="tooltip" title="Gérez les catégories des produits">Catégories</a>
         </li>
-        <li class="nav-item"> 
-          <a class="nav-link" href="#" data-bs-toggle="tooltip" title="Consultez l'historique des produits ajoutés ou supprimés">Historique des produits</a>
-        </li>
+       
       </ul>
     </div>
   </li>
+
   <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez les commandes des clients">
-      <i class="icon-columns menu-icon"></i>
-      <span class="menu-title">Commandes</span>
+    <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic" data-bs-toggle="tooltip" data-bs-placement="right" title="Gérez les produits de votre stock">
+      <i class="icon-layout menu-icon"></i>
+      <span class="menu-title">Ventes</span>
       <i class="menu-arrow"></i>
     </a>
-    <div class="collapse" id="form-elements">
-      <ul class="nav flex-column sub-menu">
-        <li class="nav-item">
-          <a class="nav-link"    data-bs-toggle="tooltip" title="Visualisez et modifiez les commandes des clients">Gérer les commandes</a>
-        </li>
-      </ul>
-    </div>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts" data-bs-toggle="tooltip" data-bs-placement="right" title="Analysez les statistiques de gestion des stocks">
-      <i class="icon-bar-graph menu-icon"></i>
-      <span class="menu-title">Statistiques</span>
-      <i class="menu-arrow"></i>
-    </a>
-      <div class="collapse" id="charts">
+    <div class="collapse" id="ui-basic">
       <ul class="nav flex-column sub-menu">
         <li class="nav-item"> 
-          <a class="nav-link" href="{{ route('charts.chartjs') }} "  data-bs-toggle="tooltip" title="Consultez les statistiques de vos stocks">Analyse des stocks</a>
+          <a class="nav-link" href="{{ route('ventes.create') }}" data-bs-toggle="tooltip" title="vendre un Produit ">Effectue une vente</a>
+        </li>
+        <li class="nav-item"> 
+          <a class="nav-link" href="{{ route('ventes.index') }}" data-bs-toggle="tooltip" title="Voir l'historique ">Historique de Ventes </a>
         </li>
       </ul>
     </div>
