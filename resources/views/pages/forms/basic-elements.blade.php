@@ -183,8 +183,61 @@
               <div class="col-lg-12 grid-margin">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Dropdown menu</h4>
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Filtrer les ventes</h4>
+                        <form method="GET" action="{{ route('ventes.index') }}">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <label for="date_debut">Date de début :</label>
+                              <input type="date" id="date_debut" name="date_debut" class="form-control" value="{{ request('date_debut') }}">
+                            </div>
+                            <div class="col-md-4">
+                              <label for="date_fin">Date de fin :</label>
+                              <input type="date" id="date_fin" name="date_fin" class="form-control" value="{{ request('date_fin') }}">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                              <button type="submit" class="btn btn-primary">Filtrer</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
                     
+                    <div class="card mt-4">
+                      <div class="card-body">
+                        <h4 class="card-title">Historique des ventes</h4>
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>Produit</th>
+                              <th>Quantité</th>
+                              <th>Prix Total</th>
+                              <th>Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% if ventes %}
+                              {% for vente in ventes %}
+                              <tr>
+                                <td>{{ vente.id }}</td>
+                                <td>{{ vente.produit.nom }}</td>
+                                <td>{{ vente.quantite }}</td>
+                                <td>{{ vente.prix_total }} FCFA</td>
+                                <td>{{ vente.created_at }}</td>
+                              </tr>
+                              {% endfor %}
+                            {% else %}
+                              <tr>
+                                <td colspan="5" class="text-center">Aucune vente trouvée</td>
+                              </tr>
+                            {% endif %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                                        
                      
                       
                 </div>
