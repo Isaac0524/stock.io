@@ -181,19 +181,24 @@
                           <i class="menu-arrow"></i>
                       </a>
                       <div class="collapse" id="menu-ventes">
-                          <ul class="nav flex-column sub-menu">
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
-                                      Effectuer une vente
-                                  </a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
-                                      Historique de ventes
-                                  </a>
-                              </li>
-                          </ul>
-                      </div>
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
+                                    Effectuer une vente
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
+                                    Historique de ventes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.statistiques') }}" title="Voir les stats">
+                                    Statistiques                                
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                   </li>
       
                   <!-- Inventaire -->
@@ -330,7 +335,6 @@
                                                         <th scope="col">Prix Total</th>
                                                         <th scope="col">Client</th>
                                                         <th scope="col">Date</th>
-                                                        <th scope="col" class="text-center">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -351,13 +355,7 @@
                                                                     {{ \Carbon\Carbon::parse($vente->created_at)->format('d/m/Y H:i') }}
                                                                 </span>
                                                             </td>
-                                                            <td class="text-center">
-                                                                <div class="btn-group">
-                                                                    <a href="{{ route('recu.pdf', $vente->id) }}" class="btn btn-sm btn-success receipt-btn" title="Télécharger reçu">
-                                                                        <i class="fa fa-download"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
+                                                           
                                                         </tr>
                                                     @endforeach
                                                 </tbody>

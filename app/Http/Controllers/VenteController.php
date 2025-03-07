@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Models\Vente;
 use App\Models\Produits;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class VenteController extends Controller
 {
@@ -117,7 +119,63 @@ class VenteController extends Controller
         
         return $this->generateRecuPDF(implode(',', $vente_ids));
     }
-
+    //fonction de la statistiques 
+    public function statistiques()
+    {
+        // Total des ventes
+        $totalVentes = Vente::sum('prix_total');
+        
+        // Nombre total de ventes
+        $nombreVentes = Vente::count();
+        
+        // Produit le plus vendu - avec relation corrigée
+        $produitPlusVendu = DB::table('produits')
+            ->join('ventes', 'produits.id', '=', 'ventes.produit_id')
+            ->select('produits.id', 'produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
+            ->groupBy('produits.id', 'produits.nom')
+            ->orderByDesc('ventes_count')
+            ->first();
+        
+        // Alternative avec Eloquent si la relation est bien configurée
+        // $produitPlusVendu = Produits::withCount('ventes')
+        //     ->orderByDesc('ventes_count')
+        //     ->first();
+        
+        // Client ayant le plus acheté
+        $clientPrincipal = Vente::selectRaw('client, COUNT(*) as total_achats, SUM(prix_total) as total_depense')
+            ->groupBy('client')
+            ->orderByDesc('total_depense')
+            ->first();
+        
+        // Ventes par période
+        $ventesParDate = Vente::selectRaw('DATE(created_at) as date, SUM(prix_total) as total')
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+        
+        $dates = $ventesParDate->pluck('date');
+        $ventes = $ventesParDate->pluck('total');
+        
+        // Répartition des ventes par produit - avec relation corrigée
+        $produitsStats = DB::table('produits')
+            ->leftJoin('ventes', 'produits.id', '=', 'ventes.produit_id')
+            ->select('produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
+            ->groupBy('produits.nom')
+            ->get();
+        
+        // Alternative avec Eloquent si la relation est bien configurée
+        // $produitsStats = Produits::withCount('ventes')->get();
+        
+        $produitsLabels = $produitsStats->pluck('nom');
+        $produitsQuantites = $produitsStats->pluck('ventes_count');
+        
+        return view('pages.ventes.statistiques', compact(
+            'totalVentes','ventesParDate', 'nombreVentes', 'produitPlusVendu', 'clientPrincipal',
+            'dates', 'ventes', 'produitsLabels', 'produitsQuantites'
+        ));
+    }
+    
+    //fonction pour générer le reçu de vente    
     public function generateRecuPDF($ids)
     {
         $ventes = Vente::with('produit')->whereIn('id', explode(',', $ids))->get();
@@ -154,7 +212,8 @@ class VenteController extends Controller
                 84 => 'quatre-vingt-quatre', 85 => 'quatre-vingt-cinq', 86 => 'quatre-vingt-six', 87 => 'quatre-vingt-sept',
                 88 => 'quatre-vingt-huit', 89 => 'quatre-vingt-neuf',
                 91 => 'quatre-vingt-onze', 92 => 'quatre-vingt-douze', 93 => 'quatre-vingt-treize',
-                94 => 'quatre-vingt-quatorze', 95 => 'quatre-vingt-quinze', 96 => 'quatre-vingt-seize'
+                94 => 'quatre-vingt-quatorze', 95 => 'quatre-vingt-quinze', 96 => 'quatre-vingt-seize', 97 => 'quatre-vingt-dix-sept',
+                98 => 'quatre-vingt-dix-huit', 99 => 'quatre-vingt-dix-neuf',99 => 'quatre-vingt-dix-neuf'
             ];
             
             $grands_nombres = [

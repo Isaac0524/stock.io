@@ -106,6 +106,11 @@
                                     Historique de ventes
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.statistiques') }}" title="Voir les stats">
+                                    Statistiques                                
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

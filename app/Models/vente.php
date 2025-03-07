@@ -14,7 +14,8 @@ class Vente extends Model {
         'produits' => 'array', // Si vous utilisez json_encode pour stocker les produits
     ];
 
-    public function produit() {
-        return $this->belongsTo(Produits::class);
+    public function produit()
+    {
+        return $this->belongsTo(Produits::class, 'produit_id', 'id');
     }
 }

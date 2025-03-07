@@ -96,20 +96,25 @@
                     <span class="menu-title">Ventes</span>
                     <i class="menu-arrow"></i>
                 </a>
-                <div class="collapse" id="menu-ventes">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
-                                Effectuer une vente
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
-                                Historique de ventes
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                 <div class="collapse" id="menu-ventes">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
+                                    Effectuer une vente
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
+                                    Historique de ventes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.statistiques') }}" title="Voir les stats">
+                                    Statistiques                                
+                                </a>                                                                                      
+                            </li>
+                        </ul>
+                    </div>
             </li>
 
             <!-- Inventaire -->
