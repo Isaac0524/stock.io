@@ -7,6 +7,7 @@ use App\Models\Vente;
 use App\Models\Produits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class VenteController extends Controller
@@ -23,8 +24,8 @@ class VenteController extends Controller
         // Construction de la requête de base
         $query = Vente::with('produit');
         
-        // Traitement des filtres de période
-        if ($request->filled('periode')) {
+        // Traitement des filtres de période prédéfinie
+        if ($request->filled('periode') && $request->periode !== 'custom') {
             $today = Carbon::today();
             
             switch ($request->periode) {
@@ -56,8 +57,9 @@ class VenteController extends Controller
                     break;
             }
         } 
-        // Dates personnalisées (si définies)
+        // Traitement des dates personnalisées
         else {
+            // Si période est "custom" ou n'est pas définie, on utilise les dates personnalisées
             if ($request->filled('date_debut')) {
                 $query->whereDate('created_at', '>=', $request->date_debut);
             }
@@ -67,7 +69,7 @@ class VenteController extends Controller
             }
         }
         
-        // Pagination (10 ventes par page)
+        // Pagination (5 ventes par page)
         $ventes = $query->orderBy('created_at', 'desc')->paginate(5);
         
         // On conserve les paramètres de requête lors de la pagination
@@ -103,6 +105,7 @@ class VenteController extends Controller
                 'quantite' => $request->quantite[$index],
                 'prix_total' => $prix_total,
                 'client' => $request->client,
+                'user_id' => Auth::id(),  // Associer l'utilisateur authentifié
             ]);
             
             $vente_ids[] = $vente->id;
@@ -119,7 +122,7 @@ class VenteController extends Controller
         
         return $this->generateRecuPDF(implode(',', $vente_ids));
     }
-    //fonction de la statistiques 
+
     public function statistiques()
     {
         // Total des ventes
@@ -135,11 +138,6 @@ class VenteController extends Controller
             ->groupBy('produits.id', 'produits.nom')
             ->orderByDesc('ventes_count')
             ->first();
-        
-        // Alternative avec Eloquent si la relation est bien configurée
-        // $produitPlusVendu = Produits::withCount('ventes')
-        //     ->orderByDesc('ventes_count')
-        //     ->first();
         
         // Client ayant le plus acheté
         $clientPrincipal = Vente::selectRaw('client, COUNT(*) as total_achats, SUM(prix_total) as total_depense')
@@ -163,9 +161,6 @@ class VenteController extends Controller
             ->groupBy('produits.nom')
             ->get();
         
-        // Alternative avec Eloquent si la relation est bien configurée
-        // $produitsStats = Produits::withCount('ventes')->get();
-        
         $produitsLabels = $produitsStats->pluck('nom');
         $produitsQuantites = $produitsStats->pluck('ventes_count');
         
@@ -175,7 +170,6 @@ class VenteController extends Controller
         ));
     }
     
-    //fonction pour générer le reçu de vente    
     public function generateRecuPDF($ids)
     {
         $ventes = Vente::with('produit')->whereIn('id', explode(',', $ids))->get();
@@ -206,14 +200,14 @@ class VenteController extends Controller
                 11 => 'onze', 12 => 'douze', 13 => 'treize', 14 => 'quatorze', 15 => 'quinze', 16 => 'seize',
                 17 => 'dix-sept', 18 => 'dix-huit', 19 => 'dix-neuf',
                 71 => 'soixante et onze', 72 => 'soixante-douze', 73 => 'soixante-treize', 74 => 'soixante-quatorze',
-                75 => 'soixante-quinze', 76 => 'soixante-seize',77=> 'soixante-dix-sept', 78 => 'soixante-dix-huit',
+                75 => 'soixante-quinze', 76 => 'soixante-seize', 77 => 'soixante-dix-sept', 78 => 'soixante-dix-huit',
                 79 => 'soixante-dix-neuf',
                 81 => 'quatre-vingt-un', 82 => 'quatre-vingt-deux', 83 => 'quatre-vingt-trois',
                 84 => 'quatre-vingt-quatre', 85 => 'quatre-vingt-cinq', 86 => 'quatre-vingt-six', 87 => 'quatre-vingt-sept',
                 88 => 'quatre-vingt-huit', 89 => 'quatre-vingt-neuf',
                 91 => 'quatre-vingt-onze', 92 => 'quatre-vingt-douze', 93 => 'quatre-vingt-treize',
                 94 => 'quatre-vingt-quatorze', 95 => 'quatre-vingt-quinze', 96 => 'quatre-vingt-seize', 97 => 'quatre-vingt-dix-sept',
-                98 => 'quatre-vingt-dix-huit', 99 => 'quatre-vingt-dix-neuf',99 => 'quatre-vingt-dix-neuf'
+                98 => 'quatre-vingt-dix-huit', 99 => 'quatre-vingt-dix-neuf'
             ];
             
             $grands_nombres = [
@@ -233,7 +227,13 @@ class VenteController extends Controller
             foreach ($grands_nombres as $valeur => $nom) {
                 if ($nombre >= $valeur) {
                     $quantité = floor($nombre / $valeur);
-                    $mots .= convertirNombreEnLettres($quantité) . " $nom";
+                    
+                    if ($valeur == 100 && $quantité == 1) {
+                        $mots .= "cent"; // "cent" au lieu de "un cent"
+                    } else {
+                        $mots .= convertirNombreEnLettres($quantité) . " $nom";
+                    }
+        
                     if ($quantité > 1 && $nom != "mille") {
                         $mots .= "s"; // Pluriel sauf pour "mille"
                     }
@@ -270,7 +270,6 @@ class VenteController extends Controller
         }
         
         
-
         // Conversion du total en lettres
         $totalEnLettres = convertirNombreEnLettres(floor($total));
 
@@ -352,20 +351,17 @@ class VenteController extends Controller
         exit;
     }
 
-    // Méthode pour récupérer une vente spécifique
     public function show($id)
     {
         $vente = Vente::with('produit')->findOrFail($id);
         return view('pages.ventes.show', compact('vente'));
     }
 
-    // Méthode pour générer un reçu PDF d'une vente spécifique
     public function recuPDF($id)
     {
         return $this->generateRecuPDF($id);
     }
 
-    // Méthode pour exporter toutes les ventes filtrées en PDF
     public function exportPDF(Request $request)
     {
         // Utiliser la même logique de filtrage que la méthode index
@@ -417,7 +413,7 @@ class VenteController extends Controller
         if ($request->filled('periode') || $request->filled('date_debut') || $request->filled('date_fin')) {
             $html .= '<p><strong>Filtre appliqué :</strong> ';
             
-            if ($request->filled('periode')) {
+            if ($request->filled('periode') && $request->periode !== 'custom') {
                 switch ($request->periode) {
                     case 'daily':
                         $html .= 'Journalier ('. Carbon::today()->format('d/m/Y') .')';
@@ -479,7 +475,6 @@ class VenteController extends Controller
         return $pdf->Output('liste-ventes.pdf', 'D');
     }
 
-    // Méthode pour exporter toutes les ventes filtrées en Excel
     public function exportExcel(Request $request)
     {
         // Récupérer les ventes filtrées
@@ -492,13 +487,12 @@ class VenteController extends Controller
         return redirect()->back()->with('success', 'La fonctionnalité d\'export Excel sera bientôt disponible. Veuillez utiliser l\'export PDF pour le moment.');
     }
     
-    // Méthode utilitaire pour récupérer les ventes filtrées (utilisée par les méthodes d'export)
     private function getFilteredVentes(Request $request)
     {
         $query = Vente::with('produit');
         
-        // Traitement des filtres de période
-        if ($request->filled('periode')) {
+        // Traitement des filtres de période prédéfinie
+        if ($request->filled('periode') && $request->periode !== 'custom') {
             $today = Carbon::today();
             
             switch ($request->periode) {
@@ -523,6 +517,7 @@ class VenteController extends Controller
                     break;
             }
         } else {
+            // Si période est "custom" ou n'est pas définie, on utilise les dates personnalisées
             if ($request->filled('date_debut')) {
                 $query->whereDate('created_at', '>=', $request->date_debut);
             }

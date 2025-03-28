@@ -18,4 +18,8 @@ class Vente extends Model {
     {
         return $this->belongsTo(Produits::class, 'produit_id', 'id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

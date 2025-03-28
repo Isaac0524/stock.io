@@ -1,30 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Skydash Admin</title>
-    <!-- plugins:css -->
+
+    <!-- Styles CSS -->
     <link rel="stylesheet" href="../../assets/vendors/feather/feather.css">
     <link rel="stylesheet" href="../../assets/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="../../assets/vendors/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
     <link rel="stylesheet" href="../../assets/css/style.css">
-    <!-- endinject -->
+
+    <!-- Favicon -->
     <link rel="shortcut icon" href="../../assets/images/favicon.png" />
 </head>
 
 <body>
+
     <div class="container-scroller">
-        <!-- partial:../../partials/_navbar.html -->
-        <nav class="navbar fixed-top d-flex flex-row">
+        
+        <!-- Navbar -->
+ <nav class="navbar fixed-top d-flex flex-row">
             <div class="navbar-brand-wrapper d-flex align-items-center">
                 <a class="navbar-brand" href="#">
                     <img src="../../assets/images/logo.svg" alt="logo" />
@@ -49,24 +48,21 @@
         </nav>
         <!-- Fin Navbar -->
 
-        <!-- partial -->
+        <!-- Fin Navbar -->
+
         <div class="container-fluid page-body-wrapper">
-            <!-- partial:../../partials/_sidebar.html -->
+        
+            <!-- Sidebar -->
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
-    
-                    <!-- Tableau de Bord -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('index') }}" data-bs-toggle="tooltip" title="Tableau de bord">
+                        <a class="nav-link" href="{{ route('index') }}">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">Tableau de bord</span>
                         </a>
                     </li>
-    
-                    <!-- Produits -->
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits" aria-expanded="false"
-                            aria-controls="menu-produits" title="Gérez les produits">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits">
                             <i class="mdi mdi-package-variant-closed menu-icon"></i>
                             <span class="menu-title">Produits</span>
                             <i class="menu-arrow"></i>
@@ -74,20 +70,14 @@
                         <div class="collapse" id="menu-produits">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('Products.create') }}" title="Ajouter un produit">
-                                        Ajouter un produit
-                                    </a>
+                                    <a class="nav-link" href="{{ route('Products.create') }}">Ajouter un produit</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('categories.index') }}" title="Gérer les catégories">
-                                        Catégories
-                                    </a>
+                                    <a class="nav-link" href="{{ route('categories.index') }}">Catégories</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-    
-                    <!-- Ventes -->
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
                             aria-controls="menu-ventes" title="Gérez les ventes">
@@ -108,14 +98,15 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('ventes.statistiques') }}" title="Voir les stats">
-                                        Statistiques                                
+                                    <a class="nav-link" href="{{ route('ventes.statistiques') }}"
+                                        title="Voir les stats">
+                                        Statistiques
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-    
+
                     <!-- Inventaire -->
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
@@ -127,7 +118,8 @@
                         <div class="collapse" id="menu-inventaire">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('inventaires.index') }}" title="Liste des stocks">
+                                    <a class="nav-link" href="{{ route('inventaires.index') }}"
+                                        title="Liste des stocks">
                                         Liste des stocks
                                     </a>
                                 </li>
@@ -135,7 +127,8 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs" aria-expanded="false" aria-controls="menu-utilisateurs">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs"
+                            aria-expanded="false" aria-controls="menu-utilisateurs">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Utilisateurs</span>
                             <i class="menu-arrow"></i>
@@ -143,7 +136,7 @@
                         <div class="collapse" id="menu-utilisateurs">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('users.create') }}">Ajouter un utilisateur</a>
+                                    <a class="nav-link" href="{{ route('users.create')}}">Ajouter un utilisateur</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('users.index') }}">Liste des utilisateurs</a>
@@ -153,83 +146,95 @@
                     </li>
                 </ul>
             </nav>
-            <!-- partial -->
+            <!-- Fin Sidebar -->
+
+            <!-- Contenu Principal -->
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="row">
-                        <div class="col-lg-12 grid-margin">
+                        <div class="col-md-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="container mt-5">
-                                        <h2>Modifier la catégorie</h2>
+                                    <h4 class="card-title">Créer un nouvel Utilisateur</h4>
+                                    <form method="POST" action="{{ route('users.store') }}">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label>Nom</label>
+                                            <input type="text" name="name" class="form-control"
+                                                placeholder="Nom" required>
+                                            @error('name')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" name="email" class="form-control"
+                                                placeholder="Email" required>
+                                            @error('email')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mot de passe</label>
+                                            <input type="password" name="password" class="form-control"
+                                                placeholder="Mot de passe" required>
+                                            @error('password')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Rôle</label>
+                                            <select name="role" class="form-control" required>
+                                                <option value="user">user</option>
+                                                <option value="admin">Admin</option>
+                                            </select>
+                                            @error('role')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Créer</button>
+                                    </form>
 
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
-
-                                        <form action="{{ route('categories.update', $categorie->id) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-
-                                            <div class="mb-3">
-                                                <label for="nom" class="form-label">Nom de la catégorie</label>
-                                                <input type="text" class="form-control" id="name"
-                                                    name="nom" value="{{ old('nom', $categorie->nom) }}"
-                                                    required>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label">Description</label>
-                                                <textarea class="form-control" id="description" name="description" rows="4">{{ old('description', $categorie->description) }}</textarea>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                                            <a href="{{ route('categories.index') }}"
-                                                class="btn btn-secondary">Annuler</a>
-                                        </form>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:../../partials/_footer.html -->
-
-            <!-- partial -->
         </div>
-        <!-- main-panel ends -->
     </div>
     <footer class="footer">
         <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2025.
-                 <a href="#" target="_blank">Prenium acces @MadeByDart</a></span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with
-                <i class="ti-heart text-danger ms-1"></i></span>
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                Copyright © 2023. Premium
+                <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a>.
+            </span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                Hand-crafted & made with <i class="ti-heart text-danger ms-1"></i>
+            </span>
         </div>
     </footer>
-    <!-- page-body-wrapper ends -->
-    </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                alert("{{ session('success') }}");
+            @endif
+    
+            @if($errors->any())
+                let errorMessages = "";
+                @foreach ($errors->all() as $error)
+                    errorMessages += "{{ $error }}\n";
+                @endforeach
+                alert(errorMessages);
+            @endif
+        });
+    </script>
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
     <script src="../../assets/js/off-canvas.js"></script>
     <script src="../../assets/js/template.js"></script>
     <script src="../../assets/js/settings.js"></script>
     <script src="../../assets/js/todolist.js"></script>
-    <!-- endinject -->
 </body>
 
 </html>

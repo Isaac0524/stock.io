@@ -283,6 +283,23 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs" aria-expanded="false" aria-controls="menu-utilisateurs">
+                        <i class="mdi mdi-account-multiple menu-icon"></i>
+                        <span class="menu-title">Utilisateurs</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="menu-utilisateurs">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('users.create') }}">Ajouter un utilisateur</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('users.index') }}">Liste des utilisateurs</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
               </ul>
           </nav>
             <!-- partial -->

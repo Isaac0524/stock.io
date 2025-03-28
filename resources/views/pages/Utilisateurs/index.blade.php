@@ -34,11 +34,13 @@
                     <span class="icon-menu"></span>
                 </button>
                 <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link count-indicator" id="notificationDropdown" href="#"
-                            data-bs-toggle="dropdown">
-                            <i class="icon-bell"></i>
-                            <span class="count"></span>
+                    <li class="nav-item">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout menu-icon"></i>
+                            Déconnexion
                         </a>
                     </li>
                 </ul>
@@ -274,16 +276,7 @@
                                     </div>
                                     <!-- content-wrapper ends -->
                                     <!-- partial:../../partials/_footer.html -->
-                                    <footer class="footer">
-                                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                                            <span
-                                                class="text-muted text-center text-sm-left d-block d-sm-inline-block">Gestion
-                                                de stock - Tous droits réservés © 2025</span>
-                                            <span
-                                                class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Optimisé
-                                                pour une gestion efficace</span>
-                                        </div>
-                                    </footer>
+                                    
                                     <!-- partial -->
                                 </div>
                                 <!-- main-panel ends -->
@@ -297,7 +290,8 @@
             </div>
         </div>
     </div>
-    <!-- End custom js for this page -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Confirmation de suppression
@@ -330,6 +324,16 @@
             });
         });
     </script>
+    <footer class="footer">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span
+                class="text-muted text-center text-sm-left d-block d-sm-inline-block">Gestion
+                de stock - Tous droits réservés © 2025</span>
+            <span
+                class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Optimisé
+                pour une gestion efficace</span>
+        </div>
+    </footer>
 </body>
 
 </html>

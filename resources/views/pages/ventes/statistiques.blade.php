@@ -189,26 +189,31 @@
 <body>
     <div class="container-scroller">
         <!-- partial:../../partials/_navbar.html -->
-        <nav class="navbar fixed-top d-flex flex-row">
-          <div class="navbar-brand-wrapper d-flex align-items-center">
-              <a class="navbar-brand" href="#">
-                  <img src="../../assets/images/logo.svg" alt="logo" />
-              </a>
-          </div>
-          <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-              <button class="navbar-toggler" type="button" data-toggle="minimize">
-                  <span class="icon-menu"></span>
-              </button>
-              <ul class="navbar-nav navbar-nav-right">
-                  <li class="nav-item dropdown">
-                      <a class="nav-link count-indicator" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-                          <i class="icon-bell"></i>
-                          <span class="count"></span>
-                      </a>
-                  </li>
-              </ul>
-          </div>
-      </nav>
+<nav class="navbar fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex align-items-center">
+                <a class="navbar-brand" href="#">
+                    <img src="../../assets/images/logo.svg" alt="logo" />
+                </a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <button class="navbar-toggler" type="button" data-toggle="minimize">
+                    <span class="icon-menu"></span>
+                </button>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout menu-icon"></i>
+                            Déconnexion
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Fin Navbar -->
+
         <!-- partial -->
         <div class="container-fluid page-body-wrapper">
             <!-- partial:../../partials/_sidebar.html -->

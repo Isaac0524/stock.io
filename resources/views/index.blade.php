@@ -28,115 +28,129 @@
 <body>
 
     <!-- partial:partials/_navbar.html -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-            <a class="navbar-brand brand-logo me-5"><img src="assets/images/logo.svg" class="me-2"
-                    alt="logo" /></a>
-            <a class="navbar-brand brand-logo-mini"><img src="assets/images/logo-mini.svg" alt="logo" /></a>
-        </div>
-        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-                <span class="icon-menu"></span>
-            </button>
-            <ul class="navbar-nav mr-lg-2">
-                <li class="nav-item nav-search d-none d-lg-block">
-                    <div class="input-group">
-                        <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                            <span class="input-group-text" id="search">
-                                <i class="icon-search"></i>
-                            </span>
-                        </div>
-                        <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now"
-                            aria-label="search" aria-describedby="search">
-                    </div>
-                </li>
-            </ul>
-            <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item dropdown">
-                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
-                        data-bs-toggle="dropdown">
-                        <i class="icon-bell mx-0"></i>
-                        <span class="count"></span>
-                    </a>
-                </li>
-            </ul>
-    </nav>
+        <nav class="navbar fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex align-items-center">
+                <a class="navbar-brand" href="#">
+                    <img src="../../assets/images/logo.svg" alt="logo" />
+                </a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <button class="navbar-toggler" type="button" data-toggle="minimize">
+                    <span class="icon-menu"></span>
+                </button>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout menu-icon"></i>
+                            Déconnexion
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Fin Navbar -->
+
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
-          <ul class="nav">
-              <li class="nav-item">
-                  <a class="nav-link" href="{{ route('index') }}">
-                      <i class="icon-grid menu-icon"></i>
-                      <span class="menu-title">Tableau de bord</span>
-                  </a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits">
-                      <i class="mdi mdi-package-variant-closed menu-icon"></i>
-                      <span class="menu-title">Produits</span>
-                      <i class="menu-arrow"></i>
-                  </a>
-                  <div class="collapse" id="menu-produits">
-                      <ul class="nav flex-column sub-menu">
-                          <li class="nav-item">
-                              <a class="nav-link" href="{{ route('Products.create') }}">Ajouter un produit</a>
-                          </li>
-                          <li class="nav-item">
-                              <a class="nav-link" href="{{ route('categories.index') }}">Catégories</a>
-                          </li>
-                      </ul>
-                  </div>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
-                    aria-controls="menu-ventes" title="Gérez les ventes">
-                    <i class="mdi mdi-cash-register menu-icon"></i>
-                    <span class="menu-title">Ventes</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                 <div class="collapse" id="menu-ventes">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('index') }}">
+                        <i class="icon-grid menu-icon"></i>
+                        <span class="menu-title">Tableau de bord</span>
+                    </a>
+                </li>
+
+                <!-- Menu Produits -->
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits" aria-expanded="false"
+                        aria-controls="menu-produits">
+                        <i class="mdi mdi-package-variant-closed menu-icon"></i>
+                        <span class="menu-title">Produits</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="menu-produits">
                         <ul class="nav flex-column sub-menu">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
-                                    Effectuer une vente
-                                </a>
+                                <a class="nav-link" href="{{ route('Products.create') }}">Ajouter un produit</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
-                                    Historique de ventes
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('ventes.statistiques') }}" title="Voir les stats">
-                                    Statistiques                                
-                                </a>                                                                                      
+                                <a class="nav-link" href="{{ route('categories.index') }}">Catégories</a>
                             </li>
                         </ul>
                     </div>
-            </li>
+                </li>
 
-            <!-- Inventaire -->
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
-                    aria-controls="menu-inventaire" title="Gérez l'inventaire">
-                    <i class="mdi mdi-clipboard-list menu-icon"></i>
-                    <span class="menu-title">Inventaire</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="collapse" id="menu-inventaire">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('inventaires.index') }}" title="Liste des stocks">
-                                Liste des stocks
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-          </ul>
-      </nav>
+                <!-- Menu Ventes -->
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
+                        aria-controls="menu-ventes" title="Gérez les ventes">
+                        <i class="mdi mdi-cash-register menu-icon"></i>
+                        <span class="menu-title">Ventes</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="menu-ventes">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.create') }}"
+                                    title="Effectuer une vente">Effectuer une vente</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.index') }}"
+                                    title="Voir l'historique">Historique de ventes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('ventes.statistiques') }}"
+                                    title="Voir les stats">Statistiques</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Menu Inventaire -->
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
+                        aria-controls="menu-inventaire" title="Gérez l'inventaire">
+                        <i class="mdi mdi-clipboard-list menu-icon"></i>
+                        <span class="menu-title">Inventaire</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="menu-inventaire">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('inventaires.index') }}"
+                                    title="Liste des stocks">Liste des stocks</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Menu Utilisateurs -->
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs" aria-expanded="false"
+                        aria-controls="menu-utilisateurs">
+                        <i class="mdi mdi-account-multiple menu-icon"></i>
+                        <span class="menu-title">Utilisateurs</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="collapse" id="menu-utilisateurs">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('users.create') }}">Ajouter un utilisateur</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('users.index') }}">Liste des utilisateurs</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+        </nav>
         <!-- partial -->
         <div class="main-panel">
             <div class="content-wrapper">
@@ -238,7 +252,13 @@
         </div>
     </footer>
     <!-- container-scroller -->
-    <!-- plugins:js -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('status') === 'error')
+                alert("{{ session('message') }}");
+            @endif
+        });
+    </script>
     <script src="assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
@@ -262,3 +282,14 @@
 </body>
 
 </html>
+use App\Models\User;
+User::create([
+    'name' => 'Admin',
+    'email' => 'admin@example.com',
+    'password' => bcrypt('pass123'),
+    'role' => 'admin'
+]);
+
+use Illuminate\Support\Facades\Auth;
+
+Auth::attempt(['email' => 'admin@example.com', 'password' => 'pass123']);
