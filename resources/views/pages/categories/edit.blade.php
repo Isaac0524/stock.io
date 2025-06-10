@@ -7,66 +7,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Skydash Admin</title>
     <!-- plugins:css -->
-    <link rel="stylesheet" href="../../assets/vendors/feather/feather.css">
-    <link rel="stylesheet" href="../../assets/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="../../assets/vendors/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <!-- endinject -->
-    <link rel="shortcut icon" href="../../assets/images/favicon.png" />
+    <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
+    
 </head>
 
 <body>
-    <div class="container-scroller">
-        <!-- partial:../../partials/_navbar.html -->
-        <nav class="navbar fixed-top d-flex flex-row">
-            <div class="navbar-brand-wrapper d-flex align-items-center">
-                <a class="navbar-brand" href="#">
-                    <img src="../../assets/images/logo.svg" alt="logo" />
-                </a>
-            </div>
-            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-                <button class="navbar-toggler" type="button" data-toggle="minimize">
-                    <span class="icon-menu"></span>
-                </button>
-                <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item">
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="mdi mdi-logout menu-icon"></i>
-                            Déconnexion
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <!-- Fin Navbar -->
-
-        <!-- partial -->
-        <div class="container-fluid page-body-wrapper">
-            <!-- partial:../../partials/_sidebar.html -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav">
-    
-                    <!-- Tableau de Bord -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('index') }}" data-bs-toggle="tooltip" title="Tableau de bord">
+    <div style="display: flex; height: 100vh; margin: 0; padding: 0;">
+      
+         <div
+            style="width: 260px; min-width: 220px; background: #e7e9ee; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas d-flex flex-column" id="sidebar"
+                style="height: 100%; background: transparent;">
+                <ul class="nav flex-column" style="flex: 1 1 auto;">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ route('index') }}">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">Tableau de bord</span>
                         </a>
                     </li>
-    
-                    <!-- Produits -->
+                    <!-- Menu Produits -->
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits" aria-expanded="false"
-                            aria-controls="menu-produits" title="Gérez les produits">
+                            aria-controls="menu-produits">
                             <i class="mdi mdi-package-variant-closed menu-icon"></i>
                             <span class="menu-title">Produits</span>
                             <i class="menu-arrow"></i>
@@ -74,20 +43,15 @@
                         <div class="collapse" id="menu-produits">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('Products.create') }}" title="Ajouter un produit">
-                                        Ajouter un produit
-                                    </a>
+                                    <a class="nav-link" href="{{ route('Products.create') }}">Ajouter un produit</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('categories.index') }}" title="Gérer les catégories">
-                                        Catégories
-                                    </a>
+                                    <a class="nav-link" href="{{ route('categories.index') }}">Catégories</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-    
-                    <!-- Ventes -->
+                    <!-- Menu Ventes -->
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
                             aria-controls="menu-ventes" title="Gérez les ventes">
@@ -98,25 +62,21 @@
                         <div class="collapse" id="menu-ventes">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
-                                        Effectuer une vente
-                                    </a>
+                                    <a class="nav-link" href="{{ route('ventes.create') }}"
+                                        title="Effectuer une vente">Effectuer une vente</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
-                                        Historique de ventes
-                                    </a>
+                                    <a class="nav-link" href="{{ route('ventes.index') }}"
+                                        title="Voir l'historique">Historique de ventes</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('ventes.statistiques') }}" title="Voir les stats">
-                                        Statistiques                                
-                                    </a>
+                                    <a class="nav-link" href="{{ route('ventes.statistiques') }}"
+                                        title="Voir les stats">Statistiques</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-    
-                    <!-- Inventaire -->
+                    <!-- Menu Inventaire -->
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
                             aria-controls="menu-inventaire" title="Gérez l'inventaire">
@@ -127,15 +87,16 @@
                         <div class="collapse" id="menu-inventaire">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('inventaires.index') }}" title="Liste des stocks">
-                                        Liste des stocks
-                                    </a>
+                                    <a class="nav-link" href="{{ route('inventaires.index') }}"
+                                        title="Liste des stocks">Liste des stocks</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
+                    <!-- Menu Utilisateurs -->
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs" aria-expanded="false" aria-controls="menu-utilisateurs">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs"
+                            aria-expanded="false" aria-controls="menu-utilisateurs">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Utilisateurs</span>
                             <i class="menu-arrow"></i>
@@ -152,84 +113,97 @@
                         </div>
                     </li>
                 </ul>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link py-2 logout-link" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout menu-icon"></i>
+                            <span class="menu-title">Déconnexion</span>
+                        </a>
+                    </li>
+                    <style>
+                        .logout-link {
+                            transition: background-color 0.3s, color 0.3s;
+                            color: black;
+                            background-color: transparent;
+                        }
+
+                        .logout-link:hover {
+                            background-color: #f8f9fa;
+                            color: #007bff;
+                        }
+                    </style>
+                </ul>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </nav>
-            <!-- partial -->
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-lg-12 grid-margin">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="container mt-5">
-                                        <h2>Modifier la catégorie</h2>
+        </div>
+        <!-- partial -->
+        <div class="main-panel" style="margin-left:260px; width:calc(100% - 260px);">
+            <div class="content-wrapper">
+            <div class="row">
+                <div class="col-lg-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                    <div class="container mt-5">
+                        <h2>Modifier la catégorie</h2>
 
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
-
-                                        <form action="{{ route('categories.update', $categorie->id) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-
-                                            <div class="mb-3">
-                                                <label for="nom" class="form-label">Nom de la catégorie</label>
-                                                <input type="text" class="form-control" id="name"
-                                                    name="nom" value="{{ old('nom', $categorie->nom) }}"
-                                                    required>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label">Description</label>
-                                                <textarea class="form-control" id="description" name="description" rows="4">{{ old('description', $categorie->description) }}</textarea>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                                            <a href="{{ route('categories.index') }}"
-                                                class="btn btn-secondary">Annuler</a>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                        @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                            </ul>
                         </div>
+                        @endif
+
+                        <form action="{{ route('categories.update', $categorie->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom de la catégorie</label>
+                            <input type="text" class="form-control" id="name"
+                            name="nom" value="{{ old('nom', $categorie->nom) }}"
+                            required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4">{{ old('description', $categorie->description) }}</textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                        <a href="{{ route('categories.index') }}"
+                            class="btn btn-secondary">Annuler</a>
+                        </form>
+                    </div>
                     </div>
                 </div>
+                </div>
             </div>
-            <!-- content-wrapper ends -->
-            <!-- partial:../../partials/_footer.html -->
-
-            <!-- partial -->
+            </div>
+            <footer class="footer">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                                Copyright © 2025.@Dart                   
+                            </span>
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                                 <i class="ti-heart text-success ms-1"></i>
+                            </span>
+                        </div>
+                    </footer>
         </div>
         <!-- main-panel ends -->
-    </div>
-    <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2025.
-                 <a href="#" target="_blank">Prenium acces @MadeByDart</a></span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with
-                <i class="ti-heart text-danger ms-1"></i></span>
         </div>
-    </footer>
-    <!-- page-body-wrapper ends -->
-    </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
+    <!-- Scripts -->
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
     <script src="../../assets/js/off-canvas.js"></script>
     <script src="../../assets/js/template.js"></script>
     <script src="../../assets/js/settings.js"></script>
     <script src="../../assets/js/todolist.js"></script>
-    <!-- endinject -->
 </body>
 
 </html>

@@ -196,7 +196,7 @@
                                                     @foreach ($users as $user)
                                                         <tr>
                                                             <td>{{ $user->id }}</td>
-                                                            <td>{{ $user->name }}</td>
+                                                            <td>{{ $user->username }}</td>
                                                             <td>{{ $user->email }}</td>
                                                             <td>{{ $user->role }}</td>
                                                             <td>
@@ -204,7 +204,7 @@
                                                                     class="btn btn-warning btn-sm edit-btn"
                                                                     data-bs-toggle="modal" data-bs-target="#editModal"
                                                                     data-id="{{ $user->id }}"
-                                                                    data-name="{{ $user->name }}"
+                                                                    data-name="{{ $user->username}}"
                                                                     data-email="{{ $user->email }}"
                                                                     data-role="{{ $user->role }}">
                                                                     Modifier
@@ -315,7 +315,7 @@
             editModal.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
                 const id = button.getAttribute('data-id');
-                const name = button.getAttribute('data-name');
+                const username= button.getAttribute('data-name');
                 const email = button.getAttribute('data-email');
                 const role = button.getAttribute('data-role');
                 

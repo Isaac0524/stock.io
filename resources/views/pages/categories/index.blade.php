@@ -6,222 +6,262 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Skydash Admin</title>
-    <!-- plugins:css -->
     <link rel="stylesheet" href="../../assets/vendors/feather/feather.css">
     <link rel="stylesheet" href="../../assets/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="../../assets/vendors/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
+
     <link rel="stylesheet" href="../../assets/css/style.css">
     <!-- endinject -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!-- endinject -->
     <link rel="shortcut icon" href="../../assets/images/favicon.png" />
 </head>
 
 <body>
-    <div class="container-scroller">
-        <!-- partial:../../partials/_navbar.html -->
-        <nav class="navbar fixed-top d-flex flex-row">
-            <div class="navbar-brand-wrapper d-flex align-items-center">
-                <a class="navbar-brand" href="#">
-                    <img src="../../assets/images/logo.svg" alt="logo" />
-                </a>
-            </div>
-            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-                <button class="navbar-toggler" type="button" data-toggle="minimize">
-                    <span class="icon-menu"></span>
-                </button>
-                <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item">
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="mdi mdi-logout menu-icon"></i>
-                            Déconnexion
+    <div style="display: flex; height: 100vh; margin: 0; padding: 0;">
+        <div
+            style="width: 260px; min-width: 220px; background: #e7e9ee; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas d-flex flex-column" id="sidebar"
+                style="height: 100%; background: transparent;">
+                <ul class="nav flex-column" style="flex: 1 1 auto;">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ route('index') }}">
+                            <i class="icon-grid menu-icon"></i>
+                            <span class="menu-title">Tableau de bord</span>
                         </a>
                     </li>
+                    <!-- Menu Produits -->
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits" aria-expanded="false"
+                            aria-controls="menu-produits">
+                            <i class="mdi mdi-package-variant-closed menu-icon"></i>
+                            <span class="menu-title">Produits</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="menu-produits">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('Products.create') }}">Ajouter un produit</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('categories.index') }}">Catégories</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Menu Ventes -->
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
+                            aria-controls="menu-ventes" title="Gérez les ventes">
+                            <i class="mdi mdi-cash-register menu-icon"></i>
+                            <span class="menu-title">Ventes</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="menu-ventes">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('ventes.create') }}"
+                                        title="Effectuer une vente">Effectuer une vente</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('ventes.index') }}"
+                                        title="Voir l'historique">Historique de ventes</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('ventes.statistiques') }}"
+                                        title="Voir les stats">Statistiques</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Menu Inventaire -->
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
+                            aria-controls="menu-inventaire" title="Gérez l'inventaire">
+                            <i class="mdi mdi-clipboard-list menu-icon"></i>
+                            <span class="menu-title">Inventaire</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="menu-inventaire">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('inventaires.index') }}"
+                                        title="Liste des stocks">Liste des stocks</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Menu Utilisateurs -->
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs" aria-expanded="false"
+                            aria-controls="menu-utilisateurs">
+                            <i class="mdi mdi-account-multiple menu-icon"></i>
+                            <span class="menu-title">Utilisateurs</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="menu-utilisateurs">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('users.create') }}">Ajouter un utilisateur</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('users.index') }}">Liste des utilisateurs</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
-            </div>
-        </nav>
-        <!-- Fin Navbar -->
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link py-2 logout-link" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout menu-icon"></i>
+                            <span class="menu-title">Déconnexion</span>
+                        </a>
+                    </li>
+                    <style>
+                        .logout-link {
+                            transition: background-color 0.3s, color 0.3s;
+                            color: black;
+                            background-color: transparent;
+                        }
 
-        <!-- partial --> <!-- partial:../../partials/_sidebar.html -->
-        <div class="container-fluid page-body-wrapper">
-            <!-- partial:../../partials/_sidebar.html -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-              <ul class="nav">
-                  <li class="nav-item">
-                      <a class="nav-link" href="{{ route('index') }}">
-                          <i class="icon-grid menu-icon"></i>
-                          <span class="menu-title">Tableau de bord</span>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits">
-                          <i class="mdi mdi-package-variant-closed menu-icon"></i>
-                          <span class="menu-title">Produits</span>
-                          <i class="menu-arrow"></i>
-                      </a>
-                      <div class="collapse" id="menu-produits">
-                          <ul class="nav flex-column sub-menu">
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ route('Products.create') }}">Ajouter un produit</a>
-                              </li>
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ route('categories.index') }}">Catégories</a>
-                              </li>
-                          </ul>
-                      </div>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
-                        aria-controls="menu-ventes" title="Gérez les ventes">
-                        <i class="mdi mdi-cash-register menu-icon"></i>
-                        <span class="menu-title">Ventes</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="menu-ventes">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
-                                    Effectuer une vente
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
-                                    Historique de ventes
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('ventes.statistiques') }}" title="Voir les stats">
-                                    Statistiques                                
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                        .logout-link:hover {
+                            background-color: #f8f9fa;
+                            color: #007bff;
+                        }
+                    </style>
+                </ul>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </nav>
+        </div>
+        <!-- partial -->
 
-                <!-- Inventaire -->
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
-                        aria-controls="menu-inventaire" title="Gérez l'inventaire">
-                        <i class="mdi mdi-clipboard-list menu-icon"></i>
-                        <span class="menu-title">Inventaire</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="menu-inventaire">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('inventaires.index') }}" title="Liste des stocks">
-                                    Liste des stocks
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs" aria-expanded="false" aria-controls="menu-utilisateurs">
-                        <i class="mdi mdi-account-multiple menu-icon"></i>
-                        <span class="menu-title">Utilisateurs</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="menu-utilisateurs">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users.create') }}">Ajouter un utilisateur</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users.index') }}">Liste des utilisateurs</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-              </ul>
-          </nav>
-            <!-- partial -->
-
-
-            <div class="container">
-                <h1 class="mb-4">Liste des Catégories</h1>
-
-                <!-- Bouton pour ajouter une catégorie -->
-                <a href="{{ route('categories.create') }}" class="btn btn-success mb-3 shadow-sm">
-                    <i class="bi bi-plus-circle me-2"></i> Ajouter une Catégorie
+        <div
+            style="margin-left: 260px; flex: 1; overflow-y: auto; background: #f8f9fa; min-height: 100vh; padding: 40px 30px 30px 30px;">
+            <h3 class="mb-4"><i class="fa fa-list-alt me-2 text-primary"></i>Liste des Catégories </h3>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a href="{{ route('categories.create') }}" class="btn btn-primary d-inline-flex align-items-center">
+                    <i class="fa fa-plus me-1"></i>Ajouter une catégorie
                 </a>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">Liste des Produits</h4>
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                            aria-label="Fermer"></button>
+                    </div>
+                @endif
 
-                <!-- Table des catégories -->
-                <table class="table table-striped table-hover shadow-sm">
-                    <thead class="table-light">
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                            aria-label="Fermer"></button>
+                    </div>
+                @endif
+            </div>
+
+            <!-- Table des catégories -->
+            <div class="table-responsive rounded shadow-sm">
+                <table class="table table-hover align-middle mb-0"
+                    style="background: #fff; border-radius: 10px; overflow: hidden;">
+                    <thead style="background: #e9ecef;">
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nom</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col" style="width: 60px;">#</th>
+                            <th scope="col"><i class="fa fa-tag me-1 text-secondary"></i>Nom</th>
+                            <th scope="col"><i class="fa fa-align-left me-1 text-secondary"></i>Description</th>
+                            <th scope="col" style="width: 180px;"><i
+                                    class="fa fa-cogs me-1 text-secondary"></i>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($categories as $categorie)
-                            <tr style="border-top: 1px solid #dee2e6;">
-                                <td>{{ $loop->iteration }}</td>
+                            <tr style="border-top: 1px solid #f1f1f1;">
+                                <td class="fw-bold text-primary">{{ $loop->iteration }}</td>
                                 <td>{{ $categorie->nom }}</td>
                                 <td class="text-wrap" style="word-break: break-word; max-width: 300px;">
                                     {{ $categorie->description }}
                                 </td>
-                                
                                 <td>
                                     <!-- Modifier avec icône -->
                                     <a href="{{ route('categories.edit', $categorie->id) }}"
-                                        class="btn btn-sm btn-warning shadow-sm">
-                                        <i class="bi bi-pencil-square"></i>
+                                        class="btn btn-sm btn-outline-warning me-2 d-inline-flex align-items-center"
+                                        title="Modifier">
+                                        <i class="fa fa-edit me-1"></i>
                                     </a>
                                     <!-- Supprimer avec icône -->
                                     <form action="{{ route('categories.destroy', $categorie->id) }}" method="POST"
                                         style="display: inline-block;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger shadow-sm"
-                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">
-                                            <i class="bi bi-trash"></i>
+                                        <button type="submit"
+                                            class="btn btn-sm btn-outline-danger d-inline-flex align-items-center"
+                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')"
+                                            title="Supprimer">
+                                            <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center">Aucune catégorie disponible.</td>
+                                <td colspan="4" class="text-center text-muted py-4">
+                                    <i class="fa fa-folder-open fa-2x mb-2"></i><br>
+                                    Aucune catégorie disponible.
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="text-center mt-4">
-            <button class="btn btn-secondary shadow-sm">Afficher plus</button>
-        </div>
+            <div class="text-center mt-4">
+                {{ $categories->links('pagination::bootstrap-4') }}
+            </div>
+            <style>
+                .table thead th {
+                    border-bottom: 2px solid #dee2e6;
+                    font-weight: 600;
+                    color: #495057;
+                }
 
-        <!-- partial -->
-    </div>
-    <!-- main-panel ends -->
-    </div>
-    <!-- page-body-wrapper ends -->
+                .table-hover tbody tr:hover {
+                    background-color: #f1f7fd;
+                    transition: background 0.2s;
+                }
+
+                .btn-outline-warning:hover,
+                .btn-outline-danger:hover {
+                    color: #fff !important;
+                }
+            </style>
+            <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                        Copyright © 2025.@Dart
+                    </span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                        <i class="ti-heart text-success ms-1"></i>
+                    </span>
+                </div>
+            </footer>
+        </div>
     </div>
 
-    <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023. Premium <a
-                    href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from
-                BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i
-                    class="ti-heart text-danger ms-1"></i></span>
-        </div>
-    </footer>
+
+
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>

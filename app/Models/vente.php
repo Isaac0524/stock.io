@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Vente extends Model {
     use HasFactory;
 
-    protected $fillable = ['produit_id', 'quantite', 'prix_total', 'client'];
+    protected $fillable = ['produit_id', 'quantite', 'prix_total', 'client','user_id'];
     
     protected $casts = [
         'produits' => 'array', // Si vous utilisez json_encode pour stocker les produits

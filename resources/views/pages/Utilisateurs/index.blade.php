@@ -20,47 +20,23 @@
 
 <body>
 
-    <div class="container-scroller">
-
-        <!-- Navbar -->
-        <nav class="navbar fixed-top d-flex flex-row">
-            <div class="navbar-brand-wrapper d-flex align-items-center">
-                <a class="navbar-brand" href="#">
-                    <img src="../../assets/images/logo.svg" alt="logo" />
-                </a>
-            </div>
-            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-                <button class="navbar-toggler" type="button" data-toggle="minimize">
-                    <span class="icon-menu"></span>
-                </button>
-                <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item">
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="mdi mdi-logout menu-icon"></i>
-                            Déconnexion
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <!-- Fin Navbar -->
-
-        <div class="container-fluid page-body-wrapper">
-
-            <!-- Sidebar -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav">
+    <div style="display: flex; height: 100vh; margin: 0; padding: 0;">
+        <!-- Navbar / Sidebar -->
+        <div
+            style="width: 260px; min-width: 220px; background: #e7e9ee; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;">
+            <nav class="sidebar sidebar-offcanvas d-flex flex-column" id="sidebar"
+                style="height: 100%; background: transparent;">
+                <ul class="nav flex-column" style="flex: 1 1 auto;">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('index') }}">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">Tableau de bord</span>
                         </a>
                     </li>
+                    <!-- Menu Produits -->
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits" aria-expanded="false"
+                            aria-controls="menu-produits">
                             <i class="mdi mdi-package-variant-closed menu-icon"></i>
                             <span class="menu-title">Produits</span>
                             <i class="menu-arrow"></i>
@@ -76,6 +52,7 @@
                             </ul>
                         </div>
                     </li>
+                    <!-- Menu Ventes -->
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
                             aria-controls="menu-ventes" title="Gérez les ventes">
@@ -86,26 +63,21 @@
                         <div class="collapse" id="menu-ventes">
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
-                                        Effectuer une vente
-                                    </a>
+                                    <a class="nav-link" href="{{ route('ventes.create') }}"
+                                        title="Effectuer une vente">Effectuer une vente</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
-                                        Historique de ventes
-                                    </a>
+                                    <a class="nav-link" href="{{ route('ventes.index') }}"
+                                        title="Voir l'historique">Historique de ventes</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('ventes.statistiques') }}"
-                                        title="Voir les stats">
-                                        Statistiques
-                                    </a>
+                                        title="Voir les stats">Statistiques</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-
-                    <!-- Inventaire -->
+                    <!-- Menu Inventaire -->
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
                             aria-controls="menu-inventaire" title="Gérez l'inventaire">
@@ -117,16 +89,15 @@
                             <ul class="nav flex-column sub-menu">
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('inventaires.index') }}"
-                                        title="Liste des stocks">
-                                        Liste des stocks
-                                    </a>
+                                        title="Liste des stocks">Liste des stocks</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs"
-                            aria-expanded="false" aria-controls="menu-utilisateurs">
+                    <!-- Menu Utilisateurs -->
+                    <li class="nav-item active">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs" aria-expanded="false"
+                            aria-controls="menu-utilisateurs">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Utilisateurs</span>
                             <i class="menu-arrow"></i>
@@ -143,152 +114,179 @@
                         </div>
                     </li>
                 </ul>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link py-2 logout-link" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout menu-icon"></i>
+                            <span class="menu-title">Déconnexion</span>
+                        </a>
+                    </li>
+                    <style>
+                        .logout-link {
+                            transition: background-color 0.3s, color 0.3s;
+                            color: black;
+                            background-color: transparent;
+                        }
+
+                        .logout-link:hover {
+                            background-color: #f8f9fa;
+                            color: #007bff;
+                        }
+                    </style>
+                </ul>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </nav>
-            <!-- Fin Sidebar -->
+        </div>
+        <!-- Fin Sidebar -->
 
-            <!-- partial -->
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-lg-12 grid-margin">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="container mt-4">
-                                        <h1 class="mb-4">Gestion des Utilisateurs</h1>
+        <!-- Main Content -->
+        <div class="main-panel" style="margin-left:260px; width:calc(100% - 260px);">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-lg-12 grid-margin">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="container mt-4">
+                                    <h1 class="mb-4">Gestion des Utilisateurs</h1>
 
-                                        <div class="mb-3">
-                                            <a href="{{ route('users.create') }}" class="btn btn-primary">Ajouter un
-                                                utilisateur</a>
+                                    <div class="mb-3">
+                                        <a href="{{ route('users.create') }}" class="btn btn-primary">Ajouter un
+                                            utilisateur</a>
+                                    </div>
+
+                                    @if (session('success'))
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            {{ session('success') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
                                         </div>
+                                    @endif
 
-                                        @if (session('success'))
-                                            <div class="alert alert-success alert-dismissible fade show"
-                                                role="alert">
-                                                {{ session('success') }}
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                        @endif
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
+                                        </div>
+                                    @endif
 
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger alert-dismissible fade show"
-                                                role="alert">
-                                                <ul class="mb-0">
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                        @endif
-
-                                        <div class="table-responsive">
-                                            <table class="table table-striped">
-                                                <thead>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Nom</th>
+                                                    <th>Email</th>
+                                                    <th>Rôle</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($users as $user)
                                                     <tr>
-                                                        <th>ID</th>
-                                                        <th>Nom</th>
-                                                        <th>Email</th>
-                                                        <th>Rôle</th>
-                                                        <th>Actions</th>
+                                                        <td>{{ $user->id }}</td>
+                                                        <td>{{ $user->username }}</td>
+                                                        <td>{{ $user->email }}</td>
+                                                        <td>{{ $user->role }}</td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-warning btn-sm edit-btn"
+                                                                data-bs-toggle="modal" data-bs-target="#editModal"
+                                                                data-id="{{ $user->id }}"
+                                                                data-name="{{ $user->username }}"
+                                                                data-email="{{ $user->email }}"
+                                                                data-role="{{ $user->role }}">
+                                                                Modifier
+                                                            </button>
+
+                                                            <form action="{{ route('users.destroy', $user->id) }}"
+                                                                method="POST" class="d-inline delete-form">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="btn btn-danger btn-sm">Supprimer</button>
+                                                            </form>
+                                                        </td>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($users as $user)
-                                                        <tr>
-                                                            <td>{{ $user->id }}</td>
-                                                            <td>{{ $user->name }}</td>
-                                                            <td>{{ $user->email }}</td>
-                                                            <td>{{ $user->role }}</td>
-                                                            <td>
-                                                                <button type="button"
-                                                                    class="btn btn-warning btn-sm edit-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#editModal"
-                                                                    data-id="{{ $user->id }}"
-                                                                    data-name="{{ $user->name }}"
-                                                                    data-email="{{ $user->email }}"
-                                                                    data-role="{{ $user->role }}">
-                                                                    Modifier
-                                                                </button>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                                                <form action="{{ route('users.destroy', $user->id) }}"
-                                                                    method="POST" class="d-inline delete-form">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="btn btn-danger btn-sm">Supprimer</button>
-                                                                </form>
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <!-- Modal de modification -->
-                                        <div class="modal fade" id="editModal" tabindex="-1"
-                                            aria-labelledby="editModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModalLabel">Modifier
-                                                            l'utilisateur</h5>
-                                                        <button type="button" class="btn-close"
-                                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <form id="editUserForm" method="POST">
-                                                        <div class="modal-body">
-                                                            @csrf
-                                                            @method('PUT')
-
-                                                            <div class="mb-3">
-                                                                <label for="name" class="form-label">Nom</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="name" name="name" required>
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="email" class="form-label">Email</label>
-                                                                <input type="email" class="form-control"
-                                                                    id="email" name="email" required>
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="role" class="form-label">Rôle</label>
-                                                                <select class="form-select" id="role"
-                                                                    name="role" required>
-                                                                    <option value="admin">Admin</option>
-                                                                    <option value="user">User</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="submit"
-                                                                class="btn btn-primary">Enregistrer</button>
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Annuler</button>
-                                                        </div>
-                                                    </form>
+                                    <!-- Modal de modification -->
+                                    <div class="modal fade" id="editModal" tabindex="-1"
+                                        aria-labelledby="editModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editModalLabel">Modifier
+                                                        l'utilisateur</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                                 </div>
+                                                <form id="editUserForm" method="POST">
+                                                    <div class="modal-body">
+                                                        @csrf
+                                                        @method('PUT')
+
+                                                        <div class="mb-3">
+                                                            <label for="name" class="form-label">Nom</label>
+                                                            <input type="text" class="form-control" id="name"
+                                                                name="name" required>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="email" class="form-label">Email</label>
+                                                            <input type="email" class="form-control" id="email"
+                                                                name="email" required>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="role" class="form-label">Rôle</label>
+                                                            <select class="form-select" id="role" name="role"
+                                                                required>
+                                                                <option value="admin">Admin</option>
+                                                                <option value="user">User</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit"
+                                                            class="btn btn-primary">Enregistrer</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Annuler</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- content-wrapper ends -->
-                                    <!-- partial:../../partials/_footer.html -->
-                                    
-                                    <!-- partial -->
                                 </div>
-                                <!-- main-panel ends -->
+                                <!-- content-wrapper ends -->
                             </div>
-                            <!-- page-body-wrapper ends -->
                         </div>
-                        
-                        <!-- endinject -->
                     </div>
                 </div>
+
             </div>
+            <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                        Copyright © 2025.@Dart
+                    </span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                        <i class="ti-heart text-success ms-1"></i>
+                    </span>
+                </div>
+            </footer>
         </div>
+        <!-- End Main Content -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -303,37 +301,28 @@
                     }
                 });
             });
-            
+
             // Gestion du modal d'édition
             const editModal = document.getElementById('editModal');
             editModal.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
                 const id = button.getAttribute('data-id');
-                const name = button.getAttribute('data-name');
+                const username = button.getAttribute('data-name');
                 const email = button.getAttribute('data-email');
                 const role = button.getAttribute('data-role');
-                
+
                 // Mise à jour des valeurs dans le formulaire
                 document.getElementById('name').value = name;
                 document.getElementById('email').value = email;
                 document.getElementById('role').value = role;
-                
+
                 // Mise à jour de l'action du formulaire
                 const form = document.getElementById('editUserForm');
                 form.action = `/admin/users/${id}`;
             });
         });
     </script>
-    <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span
-                class="text-muted text-center text-sm-left d-block d-sm-inline-block">Gestion
-                de stock - Tous droits réservés © 2025</span>
-            <span
-                class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Optimisé
-                pour une gestion efficace</span>
-        </div>
-    </footer>
+
 </body>
 
 </html>

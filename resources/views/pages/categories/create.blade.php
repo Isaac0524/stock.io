@@ -7,59 +7,33 @@
     <title>Skydash Admin</title>
 
     <!-- Styles CSS -->
-    <link rel="stylesheet" href="../../assets/vendors/feather/feather.css">
-    <link rel="stylesheet" href="../../assets/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="../../assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="../../assets/vendors/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../../assets/css/style.css">
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="../../assets/images/favicon.png" />
+    <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
 </head>
 
 <body>
-    <div class="container-scroller">
-        <!-- Navbar -->
-        <nav class="navbar fixed-top d-flex flex-row">
-            <div class="navbar-brand-wrapper d-flex align-items-center">
-                <a class="navbar-brand" href="#">
-                    <img src="../../assets/images/logo.svg" alt="logo" />
-                </a>
-            </div>
-            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-                <button class="navbar-toggler" type="button" data-toggle="minimize">
-                    <span class="icon-menu"></span>
-                </button>
-                <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item">
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                            @csrf
-                        </form>
-                        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="mdi mdi-logout menu-icon"></i>
-                            Déconnexion
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <!-- Fin Navbar -->
-
-        <!-- Fin Navbar -->
-
-        <div class="container-fluid page-body-wrapper">
-            <!-- Sidebar -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav">
-                    <li class="nav-item">
+    <div style="display: flex; height: 100vh; margin: 0; padding: 0;">
+        <div
+            style="width: 260px; min-width: 220px; background: #e7e9ee; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas d-flex flex-column" id="sidebar"
+                style="height: 100%; background: transparent;">
+                <ul class="nav flex-column" style="flex: 1 1 auto;">
+                    <li class="nav-item active">
                         <a class="nav-link" href="{{ route('index') }}">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">Tableau de bord</span>
                         </a>
                     </li>
+                    <!-- Menu Produits -->
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits" aria-expanded="false"
+                            aria-controls="menu-produits">
                             <i class="mdi mdi-package-variant-closed menu-icon"></i>
                             <span class="menu-title">Produits</span>
                             <i class="menu-arrow"></i>
@@ -75,54 +49,52 @@
                             </ul>
                         </div>
                     </li>
+                    <!-- Menu Ventes -->
                     <li class="nav-item">
-                      <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
-                          aria-controls="menu-ventes" title="Gérez les ventes">
-                          <i class="mdi mdi-cash-register menu-icon"></i>
-                          <span class="menu-title">Ventes</span>
-                          <i class="menu-arrow"></i>
-                      </a>
-                    <div class="collapse" id="menu-ventes">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('ventes.create') }}" title="Effectuer une vente">
-                                    Effectuer une vente
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('ventes.index') }}" title="Voir l'historique">
-                                    Historique de ventes
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('ventes.statistiques') }}" title="Voir les stats">
-                                    Statistiques                                
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                  </li>
-  
-                  <!-- Inventaire -->
-                  <li class="nav-item">
-                      <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
-                          aria-controls="menu-inventaire" title="Gérez l'inventaire">
-                          <i class="mdi mdi-clipboard-list menu-icon"></i>
-                          <span class="menu-title">Inventaire</span>
-                          <i class="menu-arrow"></i>
-                      </a>
-                      <div class="collapse" id="menu-inventaire">
-                          <ul class="nav flex-column sub-menu">
-                              <li class="nav-item">
-                                  <a class="nav-link" href="{{ route('inventaires.index') }}" title="Liste des stocks">
-                                      Liste des stocks
-                                  </a>
-                              </li>
-                          </ul>
-                      </div>
-                  </li>
-                  <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs" aria-expanded="false" aria-controls="menu-utilisateurs">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-ventes" aria-expanded="false"
+                            aria-controls="menu-ventes" title="Gérez les ventes">
+                            <i class="mdi mdi-cash-register menu-icon"></i>
+                            <span class="menu-title">Ventes</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="menu-ventes">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('ventes.create') }}"
+                                        title="Effectuer une vente">Effectuer une vente</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('ventes.index') }}"
+                                        title="Voir l'historique">Historique de ventes</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('ventes.statistiques') }}"
+                                        title="Voir les stats">Statistiques</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Menu Inventaire -->
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-inventaire" aria-expanded="false"
+                            aria-controls="menu-inventaire" title="Gérez l'inventaire">
+                            <i class="mdi mdi-clipboard-list menu-icon"></i>
+                            <span class="menu-title">Inventaire</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="menu-inventaire">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('inventaires.index') }}"
+                                        title="Liste des stocks">Liste des stocks</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Menu Utilisateurs -->
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#menu-utilisateurs" aria-expanded="false"
+                            aria-controls="menu-utilisateurs">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Utilisateurs</span>
                             <i class="menu-arrow"></i>
@@ -139,60 +111,87 @@
                         </div>
                     </li>
                 </ul>
-            </nav>
-            <!-- Fin Sidebar -->
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link py-2 logout-link" href="#"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="mdi mdi-logout menu-icon"></i>
+                            <span class="menu-title">Déconnexion</span>
+                        </a>
+                    </li>
+                    <style>
+                        .logout-link {
+                            transition: background-color 0.3s, color 0.3s;
+                            color: black;
+                            background-color: transparent;
+                        }
 
-            <!-- Contenu Principal -->
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-md-12 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Créer une nouvelle Catégorie</h4>
-                                    <form method="POST" action="{{ route('categories.store') }}" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label for="nom">Nom de la Catégorie</label>
-                                            <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom de la catégorie" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="description">Description</label>
-                                            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Description de la catégorie" required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Créer</button>
-                                        <button type="reset" class="btn btn-light">Annuler</button>
-                                    </form>
-                                </div>
+                        .logout-link:hover {
+                            background-color: #f8f9fa;
+                            color: #007bff;
+                        }
+                    </style>
+                </ul>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </nav>
+        </div>
+        <!-- partial -->
+
+
+        <!-- Contenu Principal -->
+        <div class="main-panel" style="margin-left: 260px; width: 100%;">
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Créer une nouvelle Catégorie</h4>
+                                <form method="POST" action="{{ route('categories.store') }}"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="nom">Nom de la Catégorie</label>
+                                        <input type="text" class="form-control" id="nom" name="nom"
+                                            placeholder="Nom de la catégorie" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea class="form-control" id="description" name="description" rows="4"
+                                            placeholder="Description de la catégorie" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Créer</button>
+                                    <a href="{{ route('categories.index') }}" class="btn btn-secondary">Annuler</a>
+                                </form>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Fin Contenu Principal -->
-
-                <!-- Pied de Page -->
-                <footer class="footer">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                            Copyright © 2023. Premium
-                            <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a>.
-                        </span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-                            Hand-crafted & made with <i class="ti-heart text-danger ms-1"></i>
-                        </span>
-                    </div>
-                </footer>
-                <!-- Fin Pied de Page -->
             </div>
-        </div>
-    </div>
+            <!-- Fin Contenu Principal -->
 
-    <!-- Scripts -->
-    <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
-    <script src="../../assets/js/off-canvas.js"></script>
-    <script src="../../assets/js/template.js"></script>
-    <script src="../../assets/js/settings.js"></script>
-    <script src="../../assets/js/todolist.js"></script>
+            <!-- Pied de Page -->
+            <footer class="footer">
+                        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                                Copyright © 2025.@Dart                   
+                            </span>
+                            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                                 <i class="ti-heart text-success ms-1"></i>
+                            </span>
+                        </div>
+                    </footer>
+            <!-- Fin Pied de Page -->
+        </div>
+
+        <!-- Scripts -->
+        <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
+        <script src="../../assets/js/off-canvas.js"></script>
+        <script src="../../assets/js/template.js"></script>
+        <script src="../../assets/js/settings.js"></script>
+        <script src="../../assets/js/todolist.js"></script>
 </body>
 
 </html>

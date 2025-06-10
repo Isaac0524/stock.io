@@ -25,14 +25,14 @@ class UserController extends Controller
     {
         try{
             $request->validate([
-                'name' => 'required',
+                'username' => 'required',
                 'email' => 'required|email|unique:users',
                 'password' => 'required|min:6',
                 'role' => 'required|in:admin,user',
             ]);
 
             User::create([
-                'name' => $request->name,
+                'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'role' => $request->role,
@@ -51,13 +51,13 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $request->validate([
-            'name' => 'required',
+            'username' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
             'role' => 'required|in:admin,user',
         ]);
 
         $user->update([
-            'name' => $request->name,
+            'username' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
         ]);

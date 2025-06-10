@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+
 use TCPDF;
 use Carbon\Carbon;
 use App\Models\Vente;
@@ -105,7 +106,7 @@ class VenteController extends Controller
                 'quantite' => $request->quantite[$index],
                 'prix_total' => $prix_total,
                 'client' => $request->client,
-                'user_id' => Auth::id(),  // Associer l'utilisateur authentifié
+                'user_id' => auth()->id()
             ]);
             
             $vente_ids[] = $vente->id;
@@ -120,58 +121,55 @@ class VenteController extends Controller
             ];
         }
         
+        return redirect()->back()->with('success', 'vente éffectué avec succès.');
         return $this->generateRecuPDF(implode(',', $vente_ids));
+
     }
 
-    public function statistiques()
-    {
-        // Total des ventes
-        $totalVentes = Vente::sum('prix_total');
-        
-        // Nombre total de ventes
-        $nombreVentes = Vente::count();
-        
-        // Produit le plus vendu - avec relation corrigée
-        $produitPlusVendu = DB::table('produits')
-            ->join('ventes', 'produits.id', '=', 'ventes.produit_id')
-            ->select('produits.id', 'produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
-            ->groupBy('produits.id', 'produits.nom')
-            ->orderByDesc('ventes_count')
-            ->first();
-        
-        // Client ayant le plus acheté
-        $clientPrincipal = Vente::selectRaw('client, COUNT(*) as total_achats, SUM(prix_total) as total_depense')
-            ->groupBy('client')
-            ->orderByDesc('total_depense')
-            ->first();
-        
-        // Ventes par période
-        $ventesParDate = Vente::selectRaw('DATE(created_at) as date, SUM(prix_total) as total')
-            ->groupBy('date')
-            ->orderBy('date', 'asc')
-            ->get();
-        
-        $dates = $ventesParDate->pluck('date');
-        $ventes = $ventesParDate->pluck('total');
-        
-        // Répartition des ventes par produit - avec relation corrigée
-        $produitsStats = DB::table('produits')
-            ->leftJoin('ventes', 'produits.id', '=', 'ventes.produit_id')
-            ->select('produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
-            ->groupBy('produits.nom')
-            ->get();
-        
-        $produitsLabels = $produitsStats->pluck('nom');
-        $produitsQuantites = $produitsStats->pluck('ventes_count');
-        
-        return view('pages.ventes.statistiques', compact(
-            'totalVentes','ventesParDate', 'nombreVentes', 'produitPlusVendu', 'clientPrincipal',
-            'dates', 'ventes', 'produitsLabels', 'produitsQuantites'
-        ));
-    }
+public function statistiques()
+{
+    $totalVentes = Vente::sum('prix_total');
+    $nombreVentes = Vente::count();
+
+    $produitPlusVendu = DB::table('produits')
+        ->join('ventes', 'produits.id', '=', 'ventes.produit_id')
+        ->select('produits.id', 'produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
+        ->groupBy('produits.id', 'produits.nom')
+        ->orderByDesc('ventes_count')
+        ->first();
+
+    $clientPrincipal = Vente::selectRaw('client, COUNT(*) as total_achats, SUM(prix_total) as total_depense')
+        ->groupBy('client')
+        ->orderByDesc('total_depense')
+        ->first();
+
+    $ventesParDate = Vente::selectRaw('DATE(created_at) as date, SUM(prix_total) as total')
+        ->groupBy('date')
+        ->orderBy('date', 'asc')
+        ->get();
+
+    $dates = $ventesParDate->pluck('date');
+    $ventes = $ventesParDate->pluck('total');
+
+    $produitsStats = DB::table('produits')
+        ->leftJoin('ventes', 'produits.id', '=', 'ventes.produit_id')
+        ->select('produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
+        ->groupBy('produits.nom')
+        ->get();
+
+    $produitsLabels = $produitsStats->pluck('nom');
+    $produitsQuantites = $produitsStats->pluck('ventes_count');
+
+    return view('pages.ventes.statistiques', compact(
+        'totalVentes','ventesParDate', 'nombreVentes',
+        'produitPlusVendu', 'clientPrincipal',
+        'dates', 'ventes', 'produitsLabels', 'produitsQuantites'
+    ));
+}
+
     
-    public function generateRecuPDF($ids)
-    {
+    public function generateRecuPDF($ids){
+
         $ventes = Vente::with('produit')->whereIn('id', explode(',', $ids))->get();
         $total = $ventes->sum('prix_total');
         $nom_client = $ventes->first()->client ?? 'Client inconnu';
@@ -364,7 +362,6 @@ class VenteController extends Controller
 
     public function exportPDF(Request $request)
     {
-        // Utiliser la même logique de filtrage que la méthode index
         $ventes = $this->getFilteredVentes($request)->get();
         
         $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8');
@@ -480,10 +477,7 @@ class VenteController extends Controller
         // Récupérer les ventes filtrées
         $ventes = $this->getFilteredVentes($request)->get();
         
-        // Si vous utilisez Maatwebsite/Laravel-Excel, vous pourriez faire quelque chose comme:
-        // return Excel::download(new VentesExport($ventes), 'liste-ventes.xlsx');
-        
-        // Sinon, pour une solution simple, on peut juste rediriger avec un message
+
         return redirect()->back()->with('success', 'La fonctionnalité d\'export Excel sera bientôt disponible. Veuillez utiliser l\'export PDF pour le moment.');
     }
     
@@ -517,7 +511,6 @@ class VenteController extends Controller
                     break;
             }
         } else {
-            // Si période est "custom" ou n'est pas définie, on utilise les dates personnalisées
             if ($request->filled('date_debut')) {
                 $query->whereDate('created_at', '>=', $request->date_debut);
             }

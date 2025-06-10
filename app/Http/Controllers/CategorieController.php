@@ -13,7 +13,7 @@ class CategorieController extends Controller
     public function index()
     {
         try {
-            $categories = Categories::all(); // Récupération de toutes les catégories
+            $categories = Categories::paginate(5); // Pagination à 5 catégories par page
             return view('pages.categories.index', compact('categories'));
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Erreur lors de la récupération des catégories : ' . $e->getMessage()]);
