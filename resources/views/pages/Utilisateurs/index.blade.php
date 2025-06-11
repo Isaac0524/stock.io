@@ -232,31 +232,49 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <form id="editUserForm" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
                                                     <div class="modal-body">
-                                                        @csrf
-                                                        @method('PUT')
-
-                                                        <div class="mb-3">
-                                                            <label for="name" class="form-label">Nom</label>
-                                                            <input type="text" class="form-control" id="name"
-                                                                name="name" required>
+                                                        <div class="form-group mb-3">
+                                                            <label for="edit-username">Nom</label>
+                                                            <input type="text" name="username" id="edit-username"
+                                                                class="form-control" placeholder="Nom" required>
+                                                            @error('username')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
 
-                                                        <div class="mb-3">
-                                                            <label for="email" class="form-label">Email</label>
-                                                            <input type="email" class="form-control" id="email"
-                                                                name="email" required>
+                                                        <div class="form-group mb-3">
+                                                            <label for="edit-email">Email</label>
+                                                            <input type="email" name="email" id="edit-email"
+                                                                class="form-control" placeholder="Email" required>
+                                                            @error('email')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
 
-                                                        <div class="mb-3">
-                                                            <label for="role" class="form-label">Rôle</label>
-                                                            <select class="form-select" id="role" name="role"
-                                                                required>
-                                                                <option value="admin">Admin</option>
+                                                        <div class="form-group mb-3">
+                                                            <label for="edit-password">Mot de passe</label>
+                                                            <input type="password" name="password" id="edit-password"
+                                                                class="form-control" placeholder="Mot de passe">
+                                                            @error('password')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group mb-3">
+                                                            <label for="edit-role">Rôle</label>
+                                                            <select name="role" id="edit-role"
+                                                                class="form-control" required>
                                                                 <option value="user">User</option>
+                                                                <option value="admin">Admin</option>
                                                             </select>
+                                                            @error('role')
+                                                                <span class="text-danger">{{ $message }}</span>
+                                                            @enderror
                                                         </div>
                                                     </div>
+
                                                     <div class="modal-footer">
                                                         <button type="submit"
                                                             class="btn btn-primary">Enregistrer</button>
@@ -264,6 +282,8 @@
                                                             data-bs-dismiss="modal">Annuler</button>
                                                     </div>
                                                 </form>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -307,18 +327,19 @@
             editModal.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
                 const id = button.getAttribute('data-id');
-                const username = button.getAttribute('data-name');
+                const username = button.getAttribute('data-username');
                 const email = button.getAttribute('data-email');
                 const role = button.getAttribute('data-role');
 
-                // Mise à jour des valeurs dans le formulaire
-                document.getElementById('name').value = name;
-                document.getElementById('email').value = email;
-                document.getElementById('role').value = role;
+                // Remplir les champs dans le formulaire
+                document.getElementById('edit-username').value = username;
+                document.getElementById('edit-email').value = email;
+                document.getElementById('edit-role').value = role;
+                document.getElementById('edit-password').value = ""; // vide pour éviter de préremplir
 
-                // Mise à jour de l'action du formulaire
+                // Modifier l'action du formulaire
                 const form = document.getElementById('editUserForm');
-                form.action = `/admin/users/${id}`;
+                form.action = `/admin/users/${id}`; // adapte selon ta route réelle
             });
         });
     </script>
