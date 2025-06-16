@@ -29,7 +29,7 @@
 
     <div style="display: flex; height: 100vh; margin: 0; padding: 0;">
         <!-- Sidebar fixe -->
-        @php
+         @php
             $user = Auth::user();
         @endphp
         <div
@@ -38,7 +38,7 @@
                 style="height: 100%; background: transparent;">
                 <ul class="nav flex-column" style="flex: 1 1 auto;">
                     <!-- Tableau de bord: visible à tous -->
-                    <li class="nav-item active">
+                    <li class="nav-item ">
                         <a class="nav-link" href="{{ route('index') }}">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">Tableau de bord</span>
@@ -47,7 +47,7 @@
                     <!-- Menus réservés à l'admin -->
                     @if ($user && $user->role === 'admin')
                         <!-- Menu Produits -->
-                        <li class="nav-item">
+                        <li class="nav-item ">
                             <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits" aria-expanded="false"
                                 aria-controls="menu-produits">
                                 <i class="mdi mdi-package-variant-closed menu-icon"></i>
@@ -117,7 +117,7 @@
                             </div>
                         </li>
                         <!-- Menu Stocks -->
-                        <li class="nav-item">
+                        <li class="nav-item active ">
                             <a class="nav-link" data-bs-toggle="collapse" href="#menu-stocks" aria-expanded="false"
                                 aria-controls="menu-stocks" title="Gérez les stocks">
                                 <i class="mdi mdi-warehouse menu-icon"></i>
@@ -186,99 +186,106 @@
             </nav>
         </div>
         <!-- Contenu principal -->
-        <div style="margin-left: 260px; flex: 1; overflow-y: auto; background: #F6F8FF; min-height: 100vh;">
-            <div class="main-panel" style="margin-left: 60px; background: transparent;">
-                <div class="content-wrapper" style="padding-top: 30px;">
+        <div style="margin-left: 260px; flex: 1; overflow-y: auto; background: #f4f6f9; min-height: 100vh;">
+            <div class="main-panel" style="background: transparent;">
+                <div class="content-wrapper" style="padding: 40px 30px 0 30px;">
                     <div class="row">
-                        <div class="col-md-12 grid-margin">
-                            <div class="row">
-                                <div class="col-12 col-xl-10 mb-4 mb-xl-0">
-                                    <div class="p-4 rounded shadow-sm" style="background: #f8f9fa; color: #343a40;">
-                                        <h2 class="font-weight-bold mb-2" style="letter-spacing: 1px;">
-                                            Bienvenue sur <span style="color: #4F8DFD;">StockApp</span>
-                                        </h2>
-                                        <p class="mb-2" style="font-size: 1.15rem;">
-                                            Gérez facilement vos stocks, suivez vos ventes et optimisez votre inventaire en temps réel.
-                                        </p>
-                                       
+                        <div style="min-width: 1000px;">
+                            <div class="card shadow-sm border-0"
+                                style="width: 100%; padding: 20px; box-sizing: border-box;">
+                                <div class="card-body" style="padding: 0;">
+                                    @if (session('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        {{ session('success') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Fermer"></button>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Produits en stock -->
-                        <div class="col-md-6 grid-margin stretch-card">
-                            <div class="card" style="background: #8987f3;">
-                                <div class="card-body">
-                                    <p class="mb-4 text-white">Produits en stock</p>
-                                    <p class="fs-30 mb-2 text-white font-weight-bold">{{ $prodsenStock }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Produits en rupture -->
-                        <div class="col-md-6 grid-margin stretch-card">
-                            <div class="card" style="background: #229b12;">
-                                <div class="card-body">
-                                    <p class="mb-4 text-white">Produits en rupture ({{ $nbrProdsruptur }})</p>
-                                    @if ($nbrProdsruptur > 0)
-                                        <ul class="list-unstyled text-white">
-                                            @foreach ($prodsruptur as $produit)
-                                                <li>- {{ $produit->nom }}</li>
-                                            @endforeach
-                                        </ul>
-                                    @else
-                                        <p class="text-white">Aucun produit en rupture</p>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Tableau des stocks -->
-                                <div class="card-body">
-                                    <strong><p class="card-title">Tableau des Produits </p></strong>
-                                    <br>
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-striped" style="font-family: 'Segoe UI', Arial, sans-serif;">
+                                @endif
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <h2 class="mb-0" style="font-weight: 600; color: #222;">Mouvements de Stock
+                                        </h2>
+                                        <a href="{{ route('stocks.create') }}" class="btn btn-primary btn-sm"
+                                            style="border-radius: 4px;">
+                                            <i class="mdi mdi-plus"></i> Ajouter une entrée de stock
+                                        </a>
+                                    </div>
+                                    <div class="table-responsive" style="overflow-x: auto;">
+                                        <table class="table table-hover align-middle"
+                                            style="width: 100%; background: #fff;">
                                             <thead class="table-success">
                                                 <tr>
-                                                    <th>Nom du Produit</th>
-                                                    <th>Catégorie</th>
-                                                    <th>Prix</th>
-                                                    <th>Quantité</th>
-                                                    <th>Statut</th>
+                                                    <th style="width: 20%;">Produit</th>
+                                                    <th style="width: 15%;">Type Mouvement</th>
+                                                    <th style="width: 10%;">Quantité</th>
+                                                    <th style="width: 20%;">Date</th>
+                                                    <th style="width: 25%;">Description</th>
+                                                    <th style="width: 10%;">Stock Actuel</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($produits as $produit)
+                                                @php
+                                                    $hasMouvements = false;
+                                                @endphp
+                                                @forelse ($produits as $produit)
+                                                    @foreach ($produit->stocks as $stock)
+                                                        @php $hasMouvements = true; @endphp
+                                                        <tr>
+                                                            <td style="font-weight: 500;">{{ $produit->nom }}</td>
+                                                            <td>
+                                                                @if ($stock->type === 'entrée')
+                                                                    <span class="badge" style="background-color: #4caf50; color: #fff;">
+                                                                        {{ ucfirst($stock->type) }}
+                                                                    </span>
+                                                                @elseif ($stock->type === 'sortie')
+                                                                    <span class="badge" style="background-color: #f44336; color: #fff;">
+                                                                        {{ ucfirst($stock->type) }}
+                                                                    </span>
+                                                                @else
+                                                                    {{ ucfirst($stock->type) }}
+                                                                @endif
+                                                            </td>
+                                                            <td>{{ $stock->quantity }}</td>
+                                                            <td>{{ $stock->created_at->format('d/m/Y H:i') }}</td>
+                                                            <td>
+                                                                @if ($stock->description)
+                                                                    {{ $stock->description }}
+                                                                @else
+                                                                    <span class="text-muted">-</span>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge bg-secondary"
+                                                                    style="font-size: 1rem;">
+                                                                    {{ $produit->quantite }}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @empty
                                                     <tr>
-                                                        <td>{{ $produit->nom }}</td>
-                                                        <td>{{ $produit->categorie->nom ?? 'Non catégorisé' }}</td>
-                                                        <td>{{ $produit->prix }} FCFA</td>
-                                                        <td>{{ $produit->quantite }}</td>
-                                                        <td>
-                                                            @if ($produit->quantite > 10)
-                                                                <span class="badge bg-success">Disponible</span>
-                                                            @elseif($produit->quantite > 0)
-                                                                <span class="badge bg-warning">Faible stock</span>
-                                                            @else
-                                                                <span class="badge bg-danger">Rupture</span>
-                                                            @endif
-                                                        </td>
+                                                        <td colspan="6" class="text-center text-muted">Aucun
+                                                            produit trouvé.</td>
                                                     </tr>
-                                                @endforeach
+                                                @endforelse
+                                                @if (!$hasMouvements)
+                                                    <tr>
+                                                        <td colspan="6" class="text-center text-muted">Aucun
+                                                            mouvement de stock trouvé.</td>
+                                                    </tr>
+                                                @endif
                                             </tbody>
                                         </table>
+                                        <div class="d-flex justify-content-center mt-3">
+                                            {{ $produits->links() }}
+                                        </div>
                                     </div>
-                                <div class="d-flex justify-content-center mt-3">
-                                    {{ $produits->links() }}
-                                </div>
                                 </div>
                             </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-            <footer class="footer mt-auto py-3" style="background: #e7e9ee; position: absolute; left: 260px; right: 0; bottom: 0; width: auto;">
+                 <footer class="footer mt-auto py-3" style="background: #e7e9ee; position: absolute; left: 260px; right: 0; bottom: 0; width: auto;">
                 <div class="d-sm-flex justify-content-center justify-content-sm-between">
                     <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
                         Copyright © 2025.@Dart
@@ -300,6 +307,7 @@
                     z-index: 10;
                 }
             </style>
+            </div>
         </div>
 
     </div>
@@ -307,7 +315,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             @if (session('status') === 'error')
-                alert("{{ session('message') }}");
+            alert("{{ session('message') }}");
+            @endif
+            @if (session('status') === 'success')
+            alert("{{ session('message') }}");
             @endif
         });
     </script>
@@ -334,15 +345,3 @@
 </body>
 
 </html>
-<!--use App\Models\User;
-User::create([
-    'username' => 'Admin',
-    'email' => 'admin@example.com',
-    'password' => bcrypt('pass123'),
-    'role' => 'admin'
-]);
-
-use Illuminate\Support\Facades\Auth;
-
-Auth::attempt(['email' => 'admin@example.com', 'password' => 'pass123']);
--->

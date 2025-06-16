@@ -2,34 +2,27 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>StockApp</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="assets/vendors/feather/feather.css">
+    <title>StockApp - Ajouter des entrées de stock</title>
+    <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/js/select.dataTables.min.css') }}">
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    <style>
+
+    </style>
 </head>
 
 <body>
-
-
     <div style="display: flex; height: 100vh; margin: 0; padding: 0;">
         <!-- Sidebar fixe -->
-        @php
+         @php
             $user = Auth::user();
         @endphp
         <div
@@ -38,7 +31,7 @@
                 style="height: 100%; background: transparent;">
                 <ul class="nav flex-column" style="flex: 1 1 auto;">
                     <!-- Tableau de bord: visible à tous -->
-                    <li class="nav-item active">
+                    <li class="nav-item ">
                         <a class="nav-link" href="{{ route('index') }}">
                             <i class="icon-grid menu-icon"></i>
                             <span class="menu-title">Tableau de bord</span>
@@ -47,7 +40,7 @@
                     <!-- Menus réservés à l'admin -->
                     @if ($user && $user->role === 'admin')
                         <!-- Menu Produits -->
-                        <li class="nav-item">
+                        <li class="nav-item ">
                             <a class="nav-link" data-bs-toggle="collapse" href="#menu-produits" aria-expanded="false"
                                 aria-controls="menu-produits">
                                 <i class="mdi mdi-package-variant-closed menu-icon"></i>
@@ -117,7 +110,7 @@
                             </div>
                         </li>
                         <!-- Menu Stocks -->
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a class="nav-link" data-bs-toggle="collapse" href="#menu-stocks" aria-expanded="false"
                                 aria-controls="menu-stocks" title="Gérez les stocks">
                                 <i class="mdi mdi-warehouse menu-icon"></i>
@@ -186,99 +179,116 @@
             </nav>
         </div>
         <!-- Contenu principal -->
-        <div style="margin-left: 260px; flex: 1; overflow-y: auto; background: #F6F8FF; min-height: 100vh;">
-            <div class="main-panel" style="margin-left: 60px; background: transparent;">
-                <div class="content-wrapper" style="padding-top: 30px;">
-                    <div class="row">
-                        <div class="col-md-12 grid-margin">
-                            <div class="row">
-                                <div class="col-12 col-xl-10 mb-4 mb-xl-0">
-                                    <div class="p-4 rounded shadow-sm" style="background: #f8f9fa; color: #343a40;">
-                                        <h2 class="font-weight-bold mb-2" style="letter-spacing: 1px;">
-                                            Bienvenue sur <span style="color: #4F8DFD;">StockApp</span>
-                                        </h2>
-                                        <p class="mb-2" style="font-size: 1.15rem;">
-                                            Gérez facilement vos stocks, suivez vos ventes et optimisez votre inventaire en temps réel.
-                                        </p>
-                                       
+        <div
+            style="margin-left: 260px; flex: 1; overflow-y: auto; background: #f8f9fb; min-height: 100vh; padding: 40px 0;">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="card shadow-sm border-0 rounded-4" style="background: #fff;">
+                            <div class="card-body p-5">
+
+                                <!-- Messages -->
+                                @if (session('success'))
+                                    <div class="alert alert-success d-flex align-items-center mb-4">
+                                        <i class="fa fa-check-circle me-2"></i>
+                                        <span>{{ session('success') }}</span>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- Produits en stock -->
-                        <div class="col-md-6 grid-margin stretch-card">
-                            <div class="card" style="background: #8987f3;">
-                                <div class="card-body">
-                                    <p class="mb-4 text-white">Produits en stock</p>
-                                    <p class="fs-30 mb-2 text-white font-weight-bold">{{ $prodsenStock }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Produits en rupture -->
-                        <div class="col-md-6 grid-margin stretch-card">
-                            <div class="card" style="background: #229b12;">
-                                <div class="card-body">
-                                    <p class="mb-4 text-white">Produits en rupture ({{ $nbrProdsruptur }})</p>
-                                    @if ($nbrProdsruptur > 0)
-                                        <ul class="list-unstyled text-white">
-                                            @foreach ($prodsruptur as $produit)
-                                                <li>- {{ $produit->nom }}</li>
+                                @endif
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mb-4">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="fa fa-exclamation-triangle me-2"></i>
+                                            <strong>Erreurs :</strong>
+                                        </div>
+                                        <ul class="mb-0 ps-4">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
                                             @endforeach
                                         </ul>
-                                    @else
-                                        <p class="text-white">Aucun produit en rupture</p>
-                                    @endif
+                                    </div>
+                                @endif
+
+                                <div class="row g-5">
+                                    <!-- Formulaire -->
+                                    <div class="col-md-5">
+                                        <h4 class="mb-4 fw-bold" style="color: #222;">
+                                            <i class="mdi mdi-plus-box-multiple-outline me-2"
+                                                style="color: #888;"></i>
+                                            Nouvelle entrée
+                                        </h4>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold" style="color: #444;">Produit
+                                                *</label>
+                                            <select id="produit_id" class="form-select shadow-sm" required
+                                                style="background: #f5f6fa; border-color: #e0e3ea;">
+                                                <option value="">Sélectionnez un produit</option>
+                                                @foreach ($produits as $produit)
+                                                    <option value="{{ $produit->id }}"
+                                                        data-nom="{{ $produit->nom }}">
+                                                        {{ $produit->nom }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold" style="color: #444;">Quantité
+                                                *</label>
+                                            <input type="number" id="quantite" class="form-control shadow-sm"
+                                                min="1" required
+                                                style="background: #f5f6fa; border-color: #e0e3ea;">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold"
+                                                style="color: #444;">Description</label>
+                                            <input type="text" id="description" class="form-control shadow-sm"
+                                                style="background: #f5f6fa; border-color: #e0e3ea;">
+                                        </div>
+                                        <button type="button" id="add-entry" class="btn w-100 mt-2 py-2 fw-bold"
+                                            style="background: #29cf6e; color: #fff; border-radius: 0.5rem;">
+                                            <i class="fa fa-plus me-1"></i> Ajouter
+                                        </button>
+                                    </div>
+
+                                    <!-- Tableau des entrées -->
+                                    <div class="col-md-7">
+                                        <h4 class="mb-4 fw-bold" style="color: #222;">
+                                            <i class="mdi mdi-format-list-bulleted-type me-2"
+                                                style="color: #888;"></i>
+                                            Entrées en attente
+                                        </h4>
+                                        <div class="table-responsive rounded-3 shadow-sm">
+                                            <table class="table table-hover align-middle mb-0" id="entries-table"
+                                                style="background: #fafbfc;">
+                                                <thead class="table-light" style="background: #f1f3f7;">
+                                                    <tr>
+                                                        <th style="color: #555;">Produit</th>
+                                                        <th style="color: #555;">Quantité</th>
+                                                        <th style="color: #555;">Description</th>
+                                                        <th class="text-center" style="color: #555;">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <!-- Formulaire principal -->
+                                <form id="stock-form" action="{{ route('stocks.store') }}" method="POST"
+                                    class="mt-5">
+                                    @csrf
+                                    <input type="hidden" name="entries" id="entries-input">
+                                    <button type="submit" class="btn px-5 py-2 fw-bold" id="submit-all" disabled
+                                        style="background: #1a7c5b; color: #fff; border-radius: 0.5rem;">
+                                        <i class="fa fa-check me-1"></i> Valider toutes les entrées
+                                    </button>
+                                </form>
                             </div>
                         </div>
+
                     </div>
-                    <div class="row">
-                        <!-- Tableau des stocks -->
-                                <div class="card-body">
-                                    <strong><p class="card-title">Tableau des Produits </p></strong>
-                                    <br>
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-striped" style="font-family: 'Segoe UI', Arial, sans-serif;">
-                                            <thead class="table-success">
-                                                <tr>
-                                                    <th>Nom du Produit</th>
-                                                    <th>Catégorie</th>
-                                                    <th>Prix</th>
-                                                    <th>Quantité</th>
-                                                    <th>Statut</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($produits as $produit)
-                                                    <tr>
-                                                        <td>{{ $produit->nom }}</td>
-                                                        <td>{{ $produit->categorie->nom ?? 'Non catégorisé' }}</td>
-                                                        <td>{{ $produit->prix }} FCFA</td>
-                                                        <td>{{ $produit->quantite }}</td>
-                                                        <td>
-                                                            @if ($produit->quantite > 10)
-                                                                <span class="badge bg-success">Disponible</span>
-                                                            @elseif($produit->quantite > 0)
-                                                                <span class="badge bg-warning">Faible stock</span>
-                                                            @else
-                                                                <span class="badge bg-danger">Rupture</span>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                <div class="d-flex justify-content-center mt-3">
-                                    {{ $produits->links() }}
-                                </div>
-                                </div>
-                            </div>
-                </div>
-            </div>
-            <footer class="footer mt-auto py-3" style="background: #e7e9ee; position: absolute; left: 260px; right: 0; bottom: 0; width: auto;">
+                     <footer class="footer mt-auto py-3" style="background: #e7e9ee; position: absolute; left: 260px; right: 0; bottom: 0; width: auto;">
                 <div class="d-sm-flex justify-content-center justify-content-sm-between">
                     <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
                         Copyright © 2025.@Dart
@@ -300,49 +310,122 @@
                     z-index: 10;
                 }
             </style>
+                </div>
+            </div>
+            <style>
+                .btn-gradient-primary {
+                    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+                    color: #fff;
+                    border: none;
+                }
+
+                .btn-gradient-primary:hover {
+                    background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+                    color: #fff;
+                }
+
+                .btn-gradient-success {
+                    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+                    color: #fff;
+                    border: none;
+                }
+
+                .btn-gradient-success:hover {
+                    background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+                    color: #fff;
+                }
+
+                .card {
+                    border-radius: 1.5rem !important;
+                }
+
+                .form-control,
+                .form-select {
+                    border-radius: 0.75rem;
+                }
+
+                .table thead th {
+                    border-top: none;
+                }
+
+                .table td,
+                .table th {
+                    vertical-align: middle;
+                }
+
+                .table-responsive {
+                    background: #fff;
+                }
+            </style>
         </div>
 
     </div>
-    <!-- container-scroller -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            @if (session('status') === 'error')
-                alert("{{ session('message') }}");
-            @endif
-        });
-    </script>
     <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
     <script src="{{ asset('assets/vendors/chart.js/chart.umd.js') }}"></script>
     <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
-    <!-- <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script> -->
     <script src="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('assets/js/dataTables.select.min.js') }}"></script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
     <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
     <script src="{{ asset('assets/js/template.js') }}"></script>
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script src="{{ asset('assets/js/todolist.js') }}"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page-->
     <script src="{{ asset('assets/js/jquery.cookie.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
-    <!-- <script src="assets/js/Chart.roundedBarCharts.js"></script> -->
-    <!-- End custom js for this page-->
+    <script>
+        let entries = [];
+
+        document.getElementById('add-entry').addEventListener('click', () => {
+            const produitSelect = document.getElementById('produit_id');
+            const quantite = document.getElementById('quantite').value;
+            const description = document.getElementById('description').value;
+
+            const produitId = produitSelect.value;
+            const produitNom = produitSelect.options[produitSelect.selectedIndex].getAttribute('data-nom');
+
+            if (!produitId || quantite < 1) {
+                alert('Veuillez sélectionner un produit et saisir une quantité valide.');
+                return;
+            }
+
+            const entry = {
+                produit_id: produitId,
+                produit_nom: produitNom,
+                quantite,
+                description
+            };
+            entries.push(entry);
+            updateTable();
+            document.getElementById('submit-all').disabled = entries.length === 0;
+        });
+
+        function updateTable() {
+            const tbody = document.querySelector('#entries-table tbody');
+            tbody.innerHTML = '';
+
+            entries.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${entry.produit_nom}</td>
+            <td>${entry.quantite}</td>
+            <td>${entry.description || '-'}</td>
+            <td>
+                <button type="button" class="btn btn-light btn-sm" style="color: #e74c3c; border: 1px solid #e74c3c; background: #fff3f3;" onclick="removeEntry(${index})">
+                    <i class="mdi mdi-delete"></i>
+                </button>
+            </td>
+            `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('entries-input').value = JSON.stringify(entries);
+        }
+
+        function removeEntry(index) {
+            entries.splice(index, 1);
+            updateTable();
+            document.getElementById('submit-all').disabled = entries.length === 0;
+        }
+    </script>
 </body>
 
 </html>
-<!--use App\Models\User;
-User::create([
-    'username' => 'Admin',
-    'email' => 'admin@example.com',
-    'password' => bcrypt('pass123'),
-    'role' => 'admin'
-]);
-
-use Illuminate\Support\Facades\Auth;
-
-Auth::attempt(['email' => 'admin@example.com', 'password' => 'pass123']);
--->

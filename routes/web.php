@@ -7,7 +7,8 @@ use App\Http\Controllers\VenteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\StockController;
+//authentification routes 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -16,14 +17,18 @@ route::middleware('auth')->group(function(){
     Route::get('/', [DashboardController::class, 'index'])->name('index');
     Route::get('/index', [DashboardController::class, 'index'])->name('index');
     Route::get('ventes', [VenteController::class, 'index'])->name('ventes.index'); // Historique des ventes
+    Route::resource('stocks', StockController::class)->only(['index', 'create', 'store']);
+    Route::get('/ventes/{id}', [VenteController::class, 'show'])->name('ventes.show');
+    Route::get('/ventes/recu/{id}', [VenteController::class, 'generateRecuPDF'])->name('recu.pdf');
+    Route::get('/user/ventes/export-pdf', [VenteController::class, 'exportPDF'])->name('ventes.exportPDF'); 
+    Route::post('/vente/store', [VenteController::class, 'store'])->name('ventes.store'); // Enregistrer une vente
 
 });
 
 Route::middleware(['auth','user'])->group(function(){
     Route::get('user/vente/create', [VenteController::class, 'create'])->name('ventes.create'); // Page de création d'une vente
     Route::post('user/vente', [VenteController::class, 'store'])->name('ventes.store'); // Enregistrer une vente
-    Route::get('user/recu/{id}', [VenteController::class, 'generateRecuPDF'])->name('recu.pdf');
-    Route::get('user/ventes/export-pdf', [VenteController::class, 'exportPDF'])->name('ventes.exportPDF');
+    
 
 });
 
@@ -49,6 +54,7 @@ Route::middleware(['auth','admin'])->group(function(){
     Route::get('admin/ventes/statistiques', [VenteController::class, 'statistiques'])->name('ventes.statistiques');
     //routes des users 
     Route::resource('admin/users', UserController::class);
+
 });
 
 

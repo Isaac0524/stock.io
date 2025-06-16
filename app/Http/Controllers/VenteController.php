@@ -1,15 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
-
 use TCPDF;
 use Carbon\Carbon;
 use App\Models\Vente;
 use App\Models\Produits;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+use NumberToWords\NumberToWords;
 
 class VenteController extends Controller
 {
@@ -84,21 +84,32 @@ class VenteController extends Controller
         $request->validate([
             'produit_id.*' => 'required|exists:produits,id',
             'quantite.*' => 'required|integer|min:1',
+            'prix_total.*' => 'required|numeric|min:0',
             'client' => 'required|string|max:255',
         ]);
 
         $total_prix = 0;
-        $produits_achetés = [];
         $vente_ids = [];
 
+        // Vérification du stock avant traitement
         foreach ($request->produit_id as $index => $produit_id) {
             $produit = Produits::findOrFail($produit_id);
-
             if ($produit->quantite < $request->quantite[$index]) {
                 return redirect()->route('ventes.create')->with('error', 'La quantité demandée pour le produit ' . $produit->nom . ' n\'est pas disponible.');
             }
+        }
 
-            $prix_total = $produit->prix * $request->quantite[$index];
+        // 1. D'abord créer la transaction
+        $transaction = Transaction::create([
+            'client' => $request->client,
+            'user_id' => auth()->id(),
+            'total_prix' => 0, // On va le calculer après
+        ]);
+
+        // 2. Ensuite traitement des ventes avec la transaction_id
+        foreach ($request->produit_id as $index => $produit_id) {
+            $produit = Produits::findOrFail($produit_id);
+            $prix_total = $request->prix_total[$index];
             $total_prix += $prix_total;
 
             $vente = Vente::create([
@@ -106,253 +117,71 @@ class VenteController extends Controller
                 'quantite' => $request->quantite[$index],
                 'prix_total' => $prix_total,
                 'client' => $request->client,
-                'user_id' => auth()->id()
+                'user_id' => auth()->id(),
+                'transaction_id' => $transaction->id, // Maintenant défini !
             ]);
-            
             $vente_ids[] = $vente->id;
 
+            // Mettre à jour le stock
             $produit->quantite -= $request->quantite[$index];
             $produit->save();
-
-            $produits_achetés[] = [
-                'nom' => $produit->nom,
-                'quantite' => $request->quantite[$index],
-                'prix_total' => $prix_total,
-            ];
         }
-        
-        return redirect()->back()->with('success', 'vente éffectué avec succès.');
-        return $this->generateRecuPDF(implode(',', $vente_ids));
 
+        // 3. Mettre à jour le total de la transaction
+        $transaction->update(['total_prix' => $total_prix]);
+
+        session()->put('vente_ids', $vente_ids);
+
+        return redirect()->route('ventes.show', $transaction->id)->with('success', 'Vente enregistrée avec succès');
     }
 
-public function statistiques()
-{
-    $totalVentes = Vente::sum('prix_total');
-    $nombreVentes = Vente::count();
+    public function statistiques()
+    {
+        $totalVentes = Vente::sum('prix_total');
+        $nombreVentes = Vente::count();
 
-    $produitPlusVendu = DB::table('produits')
-        ->join('ventes', 'produits.id', '=', 'ventes.produit_id')
-        ->select('produits.id', 'produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
-        ->groupBy('produits.id', 'produits.nom')
-        ->orderByDesc('ventes_count')
-        ->first();
+        $produitPlusVendu = DB::table('produits')
+            ->join('ventes', 'produits.id', '=', 'ventes.produit_id')
+            ->select('produits.id', 'produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
+            ->groupBy('produits.id', 'produits.nom')
+            ->orderByDesc('ventes_count')
+            ->first();
 
-    $clientPrincipal = Vente::selectRaw('client, COUNT(*) as total_achats, SUM(prix_total) as total_depense')
-        ->groupBy('client')
-        ->orderByDesc('total_depense')
-        ->first();
+        $clientPrincipal = Vente::selectRaw('client, COUNT(*) as total_achats, SUM(prix_total) as total_depense')
+            ->groupBy('client')
+            ->orderByDesc('total_depense')
+            ->first();
 
-    $ventesParDate = Vente::selectRaw('DATE(created_at) as date, SUM(prix_total) as total')
-        ->groupBy('date')
-        ->orderBy('date', 'asc')
-        ->get();
+        $ventesParDate = Vente::selectRaw('DATE(created_at) as date, SUM(prix_total) as total')
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
 
-    $dates = $ventesParDate->pluck('date');
-    $ventes = $ventesParDate->pluck('total');
+        $dates = $ventesParDate->pluck('date');
+        $ventes = $ventesParDate->pluck('total');
 
-    $produitsStats = DB::table('produits')
-        ->leftJoin('ventes', 'produits.id', '=', 'ventes.produit_id')
-        ->select('produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
-        ->groupBy('produits.nom')
-        ->get();
+        $produitsStats = DB::table('produits')
+            ->leftJoin('ventes', 'produits.id', '=', 'ventes.produit_id')
+            ->select('produits.nom', DB::raw('COUNT(ventes.id) as ventes_count'))
+            ->groupBy('produits.nom')
+            ->get();
 
-    $produitsLabels = $produitsStats->pluck('nom');
-    $produitsQuantites = $produitsStats->pluck('ventes_count');
+        $produitsLabels = $produitsStats->pluck('nom');
+        $produitsQuantites = $produitsStats->pluck('ventes_count');
 
-    return view('pages.ventes.statistiques', compact(
-        'totalVentes','ventesParDate', 'nombreVentes',
-        'produitPlusVendu', 'clientPrincipal',
-        'dates', 'ventes', 'produitsLabels', 'produitsQuantites'
-    ));
-}
-
-    
-    public function generateRecuPDF($ids){
-
-        $ventes = Vente::with('produit')->whereIn('id', explode(',', $ids))->get();
-        $total = $ventes->sum('prix_total');
-        $nom_client = $ventes->first()->client ?? 'Client inconnu';
-        
-        $pdf = new TCPDF();
-        $pdf->SetCreator('Laravel');
-        $pdf->SetAuthor('Nom de l\'entreprise');
-        $pdf->SetTitle('Reçu de Vente');
-        $pdf->SetMargins(10, 10, 10);
-        $pdf->AddPage();
-
-        // Fonction pour convertir un nombre en mots (simplifiée)
-        function convertirNombreEnLettres($nombre)
-        {
-            if (!is_numeric($nombre)) {
-                return "Valeur invalide";
-            }
-        
-            if ($nombre < 0) {
-                return "moins " . convertirNombreEnLettres(abs($nombre));
-            }
-        
-            $unités = ['', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit', 'neuf'];
-            $dizaines = ['', 'dix', 'vingt', 'trente', 'quarante', 'cinquante', 'soixante', 'soixante-dix', 'quatre-vingt', 'quatre-vingt-dix'];
-            $exceptions = [
-                11 => 'onze', 12 => 'douze', 13 => 'treize', 14 => 'quatorze', 15 => 'quinze', 16 => 'seize',
-                17 => 'dix-sept', 18 => 'dix-huit', 19 => 'dix-neuf',
-                71 => 'soixante et onze', 72 => 'soixante-douze', 73 => 'soixante-treize', 74 => 'soixante-quatorze',
-                75 => 'soixante-quinze', 76 => 'soixante-seize', 77 => 'soixante-dix-sept', 78 => 'soixante-dix-huit',
-                79 => 'soixante-dix-neuf',
-                81 => 'quatre-vingt-un', 82 => 'quatre-vingt-deux', 83 => 'quatre-vingt-trois',
-                84 => 'quatre-vingt-quatre', 85 => 'quatre-vingt-cinq', 86 => 'quatre-vingt-six', 87 => 'quatre-vingt-sept',
-                88 => 'quatre-vingt-huit', 89 => 'quatre-vingt-neuf',
-                91 => 'quatre-vingt-onze', 92 => 'quatre-vingt-douze', 93 => 'quatre-vingt-treize',
-                94 => 'quatre-vingt-quatorze', 95 => 'quatre-vingt-quinze', 96 => 'quatre-vingt-seize', 97 => 'quatre-vingt-dix-sept',
-                98 => 'quatre-vingt-dix-huit', 99 => 'quatre-vingt-dix-neuf'
-            ];
-            
-            $grands_nombres = [
-                1000000000000 => "trillion",
-                1000000000 => "milliard",
-                1000000 => "million",
-                1000 => "mille",
-                100 => "cent"
-            ];
-        
-            if ($nombre == 0) {
-                return 'zéro';
-            }
-        
-            $mots = '';
-        
-            foreach ($grands_nombres as $valeur => $nom) {
-                if ($nombre >= $valeur) {
-                    $quantité = floor($nombre / $valeur);
-                    
-                    if ($valeur == 100 && $quantité == 1) {
-                        $mots .= "cent"; // "cent" au lieu de "un cent"
-                    } else {
-                        $mots .= convertirNombreEnLettres($quantité) . " $nom";
-                    }
-        
-                    if ($quantité > 1 && $nom != "mille") {
-                        $mots .= "s"; // Pluriel sauf pour "mille"
-                    }
-                    $mots .= " ";
-                    $nombre %= $valeur;
-                }
-            }
-        
-            if ($nombre > 10 && $nombre < 20) {
-                $mots .= $exceptions[$nombre];
-            } else {
-                $dizaine = floor($nombre / 10);
-                $unité = $nombre % 10;
-        
-                if ($dizaine > 0) {
-                    if (isset($exceptions[$nombre])) {
-                        $mots .= $exceptions[$nombre];
-                    } else {
-                        $mots .= $dizaines[$dizaine];
-                        if ($unité > 0) {
-                            if ($dizaine == 7 || $dizaine == 9) {
-                                $mots .= '-' . $exceptions[10 + $unité];
-                            } else {
-                                $mots .= '-' . $unités[$unité];
-                            }
-                        }
-                    }
-                } elseif ($unité > 0) {
-                    $mots .= $unités[$unité];
-                }
-            }
-        
-            return trim($mots);
-        }
-        
-        
-        // Conversion du total en lettres
-        $totalEnLettres = convertirNombreEnLettres(floor($total));
-
-        $html = '
-        <style>
-            .header {
-                text-align: center;
-                font-size: 18px;
-                font-weight: bold;
-                color: #D20000;
-            }
-            .sub-header {
-                text-align: center;
-                font-size: 12px;
-                font-weight: bold;
-            }
-            .details-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-            .details-table th, .details-table td {
-                border: 1px solid black;
-                padding: 5px;
-                text-align: center;
-            }
-            .details-table th {
-                background-color: #f2f2f2;
-            }
-            .total-section {
-                text-align: right;
-                font-size: 14px;
-                margin-top: 10px;
-                font-weight: bold;
-            }
-            .footer {
-                text-align: center;
-                margin-top: 50px;
-                font-size: 12px;
-            }
-            .signature {
-                margin-top: 50px;
-                text-align: center;
-                font-size: 12px;
-            }
-        </style>
-
-        <div class="header">COMPUTERS VILLAGE</div>
-        <div class="sub-header">Prestation de Services, Vente de Matériels Informatiques & Bureautiques</div>
-        <p><strong>Date :</strong> ' . now()->format('d/m/Y H:i') . '</p>
-        <p><strong>Client :</strong> ' . $nom_client . '</p>
-        <table class="details-table">
-            <tr>
-                <th>Produit</th>
-                <th>Quantité</th>
-                <th>Prix Unitaire (FCFA)</th>
-                <th>Total (FCFA)</th>
-            </tr>';
-
-        foreach ($ventes as $vente) {
-            $html .= '
-            <tr>
-                <td>' . $vente->produit->nom . '</td>
-                <td>' . $vente->quantite . '</td>
-                <td>' . number_format($vente->produit->prix, 2) . '</td>
-                <td>' . number_format($vente->prix_total, 2) . '</td>
-            </tr>';
-        }
-
-        $html .= '
-        </table>
-        <p class="total-section">Total à payer : ' . number_format($total, 2) . ' FCFA</p>
-        <div class="footer">ARRÊTÉE LA PRÉSENTE FACTURE À LA SOMME DE : <br><strong>' . strtoupper($totalEnLettres) . ' (' . number_format($total, 0) . ') Francs CFA</strong></div>
-        <div class="signature">Signature & Cachet</div>
-        ';
-
-        $pdf->writeHTML($html, true, false, true, false, '');
-        $pdf->Output('recu_vente_' . $ventes->first()->id . '.pdf', 'D');
-        exit;
+        return view('pages.ventes.statistiques', compact(
+            'totalVentes','ventesParDate', 'nombreVentes',
+            'produitPlusVendu', 'clientPrincipal',
+            'dates', 'ventes', 'produitsLabels', 'produitsQuantites'
+        ));
     }
 
     public function show($id)
     {
-        $vente = Vente::with('produit')->findOrFail($id);
-        return view('pages.ventes.show', compact('vente'));
+        // Récupérer la transaction avec ses ventes et produits associés
+        $transaction = Transaction::with('ventes.produit', 'user')->findOrFail($id);
+
+        return view('pages.ventes.show', compact('transaction'));
     }
 
     public function recuPDF($id)
@@ -443,7 +272,6 @@ public function statistiques()
         $html .= '
         <table class="details-table">
             <tr>
-                <th>ID</th>
                 <th>Produit</th>
                 <th>Quantité</th>
                 <th>Prix Total</th>
@@ -454,7 +282,6 @@ public function statistiques()
         foreach ($ventes as $vente) {
             $html .= '
             <tr>
-                <td>' . $vente->id . '</td>
                 <td>' . $vente->produit->nom . '</td>
                 <td>' . $vente->quantite . '</td>
                 <td>' . number_format($vente->prix_total, 2) . ' FCFA</td>
@@ -472,12 +299,109 @@ public function statistiques()
         return $pdf->Output('liste-ventes.pdf', 'D');
     }
 
+    public function generateRecuPDF($transaction_id)
+    {
+        $transaction = Transaction::with('ventes.produit')->findOrFail($transaction_id);
+        $ventes = $transaction->ventes;
+        $total = $transaction->total_prix;
+        $nom_client = $transaction->client;
+        
+        $pdf = new TCPDF();
+        $pdf->SetCreator('Laravel');
+        $pdf->SetAuthor('COMPUTERS VILLAGE');
+        $pdf->SetTitle('Reçu de Vente');
+        $pdf->SetMargins(10, 10, 10);
+        $pdf->AddPage();
+
+        // Conversion du total en lettres avec NumberToWords
+        $numberToWords = new NumberToWords();
+        $numberTransformer = $numberToWords->getNumberTransformer('fr');
+        $totalEnLettres = $numberTransformer->toWords(floor($total));
+
+        $html = '
+        <style>
+            .header {
+                text-align: center;
+                font-size: 18px;
+                font-weight: bold;
+                color: #D20000;
+            }
+            .sub-header {
+                text-align: center;
+                font-size: 12px;
+                font-weight: bold;
+            }
+            .details-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            .details-table th, .details-table td {
+                border: 1px solid black;
+                padding: 5px;
+                text-align: center;
+            }
+            .details-table th {
+                background-color: #f2f2f2;
+            }
+            .total-section {
+                text-align: right;
+                font-size: 14px;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+            .footer {
+                text-align: center;
+                margin-top: 50px;
+                font-size: 12px;
+            }
+            .signature {
+                margin-top: 50px;
+                text-align: center;
+                font-size: 12px;
+            }
+        </style>
+
+        <div class="header">COMPUTERS VILLAGE</div>
+        <div class="sub-header">Prestation de Services, Vente de Matériels Informatiques & Bureautiques</div>
+        <p><strong>Date :</strong> ' . now()->format('d/m/Y H:i') . '</p>
+        <p><strong>Client :</strong> ' . $nom_client . '</p>
+        <p><strong>Transaction N° :</strong> ' . $transaction->id . '</p>
+        <table class="details-table">
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix Unitaire (FCFA)</th>
+                <th>Total (FCFA)</th>
+            </tr>';
+
+        foreach ($ventes as $vente) {
+            $html .= '
+            <tr>
+                <td>' . $vente->produit->nom . '</td>
+                <td>' . $vente->quantite . '</td>
+                <td>' . number_format($vente->produit->prix, 2) . '</td>
+                <td>' . number_format($vente->prix_total, 2) . '</td>
+            </tr>';
+        }
+
+        $html .= '
+        </table>
+        <p class="total-section">Total à payer : ' . number_format($total, 2) . ' FCFA</p>
+        <div class="footer">ARRÊTÉE LA PRÉSENTE FACTURE À LA SOMME DE : <br><strong>' . strtoupper($totalEnLettres) . ' (' . number_format($total, 0) . ') Francs CFA</strong></div>
+        <div class="signature">Signature & Cachet</div>
+        ';
+
+        $pdf->writeHTML($html, true, false, true, false, '');
+        $pdf->Output('recu_transaction_' . $transaction->id . '.pdf', 'D');
+        exit;
+    }
+
     public function exportExcel(Request $request)
     {
         // Récupérer les ventes filtrées
         $ventes = $this->getFilteredVentes($request)->get();
         
-
         return redirect()->back()->with('success', 'La fonctionnalité d\'export Excel sera bientôt disponible. Veuillez utiliser l\'export PDF pour le moment.');
     }
     
@@ -519,7 +443,7 @@ public function statistiques()
                 $query->whereDate('created_at', '<=', $request->date_fin);
             }
         }
-        
+    
         return $query->orderBy('created_at', 'desc');
     }
 }

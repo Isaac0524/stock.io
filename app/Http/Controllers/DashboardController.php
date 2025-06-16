@@ -9,14 +9,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
+
         $prodsenStock = Produits::where('quantite', '>', 0)->count(); 
         
         $prodsruptur = Produits::where('quantite', '<=', 0)->get(); 
         
         $nbrProdsruptur = $prodsruptur->count(); 
         
-        $produits = Produits::with('categorie')->get(); 
-        
+        $produits = Produits::with('categorie')->paginate(3);     
+           
         return view('index', compact('prodsenStock', 'prodsruptur', 'nbrProdsruptur', 'produits'));
     }
 }
